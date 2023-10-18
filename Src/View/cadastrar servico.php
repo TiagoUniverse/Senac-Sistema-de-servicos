@@ -88,7 +88,7 @@ $Servico_repositorio = new Servicos_repositorio();
       ?>
       <script>
         M.toast({
-          html: 'Este serviço já foi cadastrado!';
+          html: 'Este serviço já foi cadastrado!'
         });
       </script>
   <?php

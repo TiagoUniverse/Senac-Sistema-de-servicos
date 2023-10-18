@@ -43,7 +43,18 @@ $Servico_repositorio = new Servicos_repositorio();
 
 $lista_Servicos = $Servico_repositorio->listar_Servicos($pdo);
 
-// var_dump($lista_Servicos);
+/*
+* ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+* │  Usuario'S SECTION                                                                                            │
+* └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+*/
+
+require_once "../model/Usuario_repositorio.php";
+
+use model\Usuario_repositorio;
+
+$Usuario_repositorio = new Usuario_repositorio();
+
 
 ?>
 
@@ -96,54 +107,62 @@ $lista_Servicos = $Servico_repositorio->listar_Servicos($pdo);
 
         <tbody>
 
-        <?php
-        if (!empty($lista_Servicos)){
-          ?>
-          <tr>
-            <td>Jonathan</td>
-            <td>Lollipop</td>
-            <td>
-              <!-- Dropdown Trigger -->
-              <a class='dropdown-trigger btn' href='#' data-target='dropdown1'>Drop Me!</a>
-
-              <!-- Dropdown Structure -->
-              <ul id='dropdown1' class='dropdown-content'>
-                <li><a href="#!">one</a></li>
-                <li><a href="#!">two</a></li>
-                <li class="divider" tabindex="-1"></li>
-                <li><a href="#!">three</a></li>
-                <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
-                <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
-              </ul>
-            </td>
-
-            <td>
-              <!-- Modal Trigger -->
-              <a class="waves-effect #ef5350 red lighten-1 btn modal-trigger" href="#modal1">Excluir</a>
-
-              <!-- Modal Structure -->
-              <div id="modal1" class="modal">
-                <div class="modal-content">
-                  <h4>Modal Header</h4>
-                  <p>A bunch of text</p>
-                </div>
-                <div class="modal-footer">
-                  <a href='#!' class='modal-close waves-effect waves-green btn-flat'>Cancelar</a>
-                  <a href="#!" class="modal-close waves-effect waves-green btn-flat">Excluir</a>
-                </div>
-              </div>
-
-            </td>
-
-          </tr>
-
           <?php
-        } else {
-          echo "<tr><td> Nenhum serviço cadastrado. </td> </tr>";
-        }
-        ?>
+          if (!empty($lista_Servicos)) {
+            // var_dump($lista_Servicos);
 
-          
+            foreach ($lista_Servicos as $servicos) {
+              $nomeFundador = $Usuario_repositorio->consulta_fundador($servicos[6], $pdo);
+
+              echo "<tr>";
+
+              echo "<td> " . $servicos[1] . " </td>";
+              echo "<td> " . $nomeFundador . " </td>";
+
+          ?>
+              <td>
+                <!-- Dropdown Trigger -->
+                <a class='dropdown-trigger btn' href='#' data-target='dropdown1'>Drop Me!</a>
+
+                <!-- Dropdown Structure -->
+                <ul id='dropdown1' class='dropdown-content'>
+                  <li><a href="#!">one</a></li>
+                  <li><a href="#!">two</a></li>
+                  <li class="divider" tabindex="-1"></li>
+                  <li><a href="#!">three</a></li>
+                  <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
+                  <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
+                </ul>
+              </td>
+
+              <td>
+                <!-- Modal Trigger -->
+                <a class="waves-effect #ef5350 red lighten-1 btn modal-trigger" href="#modal1">Excluir</a>
+
+                <!-- Modal Structure -->
+                <div id="modal1" class="modal">
+                  <div class="modal-content">
+                    <h4>Modal Header</h4>
+                    <p>A bunch of text</p>
+                  </div>
+                  <div class="modal-footer">
+                    <a href='#!' class='modal-close waves-effect waves-green btn-flat'>Cancelar</a>
+                    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Excluir</a>
+                  </div>
+                </div>
+
+              </td>
+            <?php
+
+              echo "</tr>";
+            }
+
+          } else {
+            echo "<tr><td> Nenhum serviço cadastrado. </td> </tr>";
+          }
+          ?>
+
+
         </tbody>
       </table>
 
