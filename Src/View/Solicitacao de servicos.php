@@ -29,6 +29,22 @@
 
 require_once "conexao.php";
 
+/*
+* ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+* │  Servicos'S SECTION                                                                                           │
+* └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+*/
+
+require_once "../model/Servicos_repositorio.php";
+
+use model\Servicos_repositorio;
+
+$Servico_repositorio = new Servicos_repositorio();
+
+$lista_Servicos = $Servico_repositorio->listar_Servicos($pdo);
+
+// var_dump($lista_Servicos);
+
 ?>
 
 <!DOCTYPE html>

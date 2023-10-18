@@ -31,58 +31,39 @@ namespace model;
 
 use PDOException;
 
-use \PDO;
-
-// Restante do seu código aqui
-
-
-class Area_conhecimento_repositorio
+class Servicos_repositorio
 {
 
     /*
     * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-    * │  Função para consultar o id de uma área de conhecimento específica                                            │
+    * │  Função para listar todos os serviços já criados                                                              │
     * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
     */
-    function consultaId_ByNome($nome, $pdo)
+    function listar_Servicos($pdo)
     {
         try {
-            $stmt = $pdo->prepare("Select * from Area_conhecimento Where nome = :nome ");
+            $stmt = $pdo->prepare("Select * from Servicos where status = 'ATIVO' ");
 
-            $stmt->execute(array(
-                ':nome' => $nome
-            ));
+            $stmt->execute();
 
+            $lista_Servicos = array();
             while ($linha = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-                return $linha['id'];
+                $id = $linha['id'];
+                $nome = $linha['nome'];
+                $descricao = $linha['descricao'];
+                $status = $linha['status'];
+                $created = $linha['created'];
+                $updated = $linha['updated'];
+                $idUsuario = $linha['idUsuario'];
+
+                $lista_Servicos[] = array($id, $nome, $descricao, $status, $created, $updated, $idUsuario);
+            
             }
-            return false;
+            return $lista_Servicos;
         } catch (PDOException $err) {
             echo $err->getMessage();
         }
     }
 
     
-
-    /*
-    * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-    * │  Função para listar todas as áreas do conhecimento disponíveis                                                │
-    * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-    */
-    function listar_Areas( $pdo)
-    {
-        try {
-            $stmt = $pdo->prepare("Select * from Area_conhecimento ");
-
-            $stmt->execute();
-
-            $nomesAreas = array();
-            while ($linha = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-                $nomesAreas[] = $linha['nome'];
-            }
-            return $nomesAreas;
-        } catch (PDOException $err) {
-            echo $err->getMessage();
-        }
-    }
 }
