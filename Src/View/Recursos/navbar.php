@@ -7,6 +7,7 @@
 
       <ul id="nav-mobile" class="sidenav">
         <li><a href="#">Tiago César da Silva Lopes</a></li>
+        <!-- Deve colocar os itens da SideBar aqui -->
         <li><a href="#">Sair</a></li>
       </ul>
       <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
