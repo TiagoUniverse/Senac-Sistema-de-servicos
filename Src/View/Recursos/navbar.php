@@ -1,5 +1,5 @@
 <nav class="indigo darken-3" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Sistema de Serviços</a>
+    <div class="nav-wrapper container"><a id="logo-container" href="Solicitacao de servicos.php" class="brand-logo">Sistema de Serviços</a>
       <ul class="right hide-on-med-and-down">
         <li><a href="#">Tiago César da Silva Lopes</a></li>
         <li><a href="#">Sair</a></li>

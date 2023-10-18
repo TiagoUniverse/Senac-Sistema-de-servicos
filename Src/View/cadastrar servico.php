@@ -11,8 +11,8 @@
  * ║  │ a menos que seja obtida permissão prévia por escrito do SENAC PERNAMBUCO.                                   │  ║
  * ║  └─────────────────────────────────────────────────────────────────────────────────────────────────────────────┘  ║
  * ║  ┌─────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  ║
- * ║  │ @description: Tela de solicitação de 'Servicos'                                                             │  ║
- * ║  │ @class: Solicitacao de servicos                                                                             │  ║
+ * ║  │ @description: Cadastro de Serviço                                                                           │  ║
+ * ║  │ @class: cadastrar servico                                                                                   │  ║
  * ║  │ @dir: View                                                                                                  │  ║
  * ║  │ @author: Tiago César da Silva Lopes                                                                         │  ║
  * ║  │ @date: 18/10/23                                                                                             │  ║
@@ -41,10 +41,6 @@ use model\Servicos_repositorio;
 
 $Servico_repositorio = new Servicos_repositorio();
 
-$lista_Servicos = $Servico_repositorio->listar_Servicos($pdo);
-
-// var_dump($lista_Servicos);
-
 ?>
 
 <!DOCTYPE html>
@@ -53,7 +49,7 @@ $lista_Servicos = $Servico_repositorio->listar_Servicos($pdo);
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
-  <title>Solicitação de Serviços</title>
+  <title>Cadastro de Serviços</title>
   <link href="../../Assets/Icons/android-chrome-192x192.png" rel="icon" type="image/png">
 
   <!-- CSS  -->
@@ -66,6 +62,42 @@ $lista_Servicos = $Servico_repositorio->listar_Servicos($pdo);
 
   <?php require_once "Recursos/scripts.php"; ?>
 
+
+  <?php
+  /*
+  * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+  * │  Cadastro'S SECTION                                                                                           │
+  * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  */
+  if (isset($_POST['status_cadastro']) && $_POST['status_cadastro'] == "CADASTRANDO UM NOVO SERVIÇO") {
+
+
+    $servico_existe = $Servico_repositorio->servico_existe($_POST['nome'], $pdo);
+
+    if ($servico_existe == false) {
+      $Servico_repositorio->cadastro($_POST['nome'], $_POST['descricao'], 1, $pdo);
+
+  ?>
+      <script>
+        M.toast({
+          html: 'Cadastro de um serviço com sucesso!'
+        });
+      </script>
+  <?php
+    } else {
+      ?>
+      <script>
+        M.toast({
+          html: 'Este serviço já foi cadastrado!';
+        });
+      </script>
+  <?php
+    }
+
+  }
+
+  ?>
+
   <?php require_once "Recursos/navbar.php"; ?>
 
   <?php require_once "Recursos/sidebar_comeco.php"; ?>
@@ -74,96 +106,43 @@ $lista_Servicos = $Servico_repositorio->listar_Servicos($pdo);
 
     <div class="container">
       <br><br>
-      <h1 class="header center black-text">Solicitação de Serviços</h1>
+      <h1 class="header center black-text">Cadastro de Serviços</h1>
       <div class="row center">
-        <h5 class="header col s12 light">Crie novos serviços ou gerencie os serviços existentes.</h5>
+        <h5 class="header col s12 light">Cadastre o serviço no formulário abaixo. </h5>
       </div>
 
-      <div class="row center">
-        <a href="cadastrar servico.php" id="download-button" class="btn-large waves-effect waves-light orange">Criar serviço</a>
-      </div>
-      <br>
+      <form action="cadastrar servico.php" method="post" enctype="multipart/form-data">
+        <div class="row center">
+          <div class="input-field col s12">
+            <input type="hidden" name="status_cadastro" value="CADASTRANDO UM NOVO SERVIÇO">
 
-      <table>
-        <thead>
-          <tr>
-            <th>Serviço</th>
-            <th>Fundador</th>
-            <th>Opções</th>
-            <th>Deletar</th>
-          </tr>
-        </thead>
-
-        <tbody>
-
-        <?php
-        if (!empty($lista_Servicos)){
-          ?>
-          <tr>
-            <td>Jonathan</td>
-            <td>Lollipop</td>
-            <td>
-              <!-- Dropdown Trigger -->
-              <a class='dropdown-trigger btn' href='#' data-target='dropdown1'>Drop Me!</a>
-
-              <!-- Dropdown Structure -->
-              <ul id='dropdown1' class='dropdown-content'>
-                <li><a href="#!">one</a></li>
-                <li><a href="#!">two</a></li>
-                <li class="divider" tabindex="-1"></li>
-                <li><a href="#!">three</a></li>
-                <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
-                <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
-              </ul>
-            </td>
-
-            <td>
-              <!-- Modal Trigger -->
-              <a class="waves-effect #ef5350 red lighten-1 btn modal-trigger" href="#modal1">Excluir</a>
-
-              <!-- Modal Structure -->
-              <div id="modal1" class="modal">
-                <div class="modal-content">
-                  <h4>Modal Header</h4>
-                  <p>A bunch of text</p>
-                </div>
-                <div class="modal-footer">
-                  <a href='#!' class='modal-close waves-effect waves-green btn-flat'>Cancelar</a>
-                  <a href="#!" class="modal-close waves-effect waves-green btn-flat">Excluir</a>
+            <div class="row">
+              <div class="row">
+                <div class="input-field col s12">
+                  <input value="" name="nome" id="nome" type="text" class="validate" required>
+                  <label for="nome">Nome do serviço:</label>
                 </div>
               </div>
 
-            </td>
+              <div class="row">
+                <div class="input-field col s12">
+                  <input value="" name="descricao" id="descricao" type="text" class="validate" required>
+                  <label for="descricao">Descrição:</label>
+                </div>
+              </div>
+            </div>
 
-          </tr>
+          </div>
 
-          <?php
-        } else {
-          echo "<tr><td> Nenhum serviço cadastrado. </td> </tr>";
-        }
-        ?>
+          <button type="submit" id="download-button" class="btn-large waves-effect waves-light orange">Criar novo serviço</button>
+        </div>
+      </form>
 
-          
-        </tbody>
-      </table>
 
     </div>
 
     <?php require_once "Recursos/sidebar_fim.php"; ?>
   </div>
-
-  <!-- Dropdown -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      var elems = document.querySelectorAll('.dropdown-trigger');
-      var instances = M.Dropdown.init(elems, options);
-    });
-
-    // Or with jQuery
-
-    $('.dropdown-trigger').dropdown();
-  </script>
-
 
 
   <?php require_once "Recursos/footer.php"; ?>

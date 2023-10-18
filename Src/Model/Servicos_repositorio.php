@@ -65,5 +65,52 @@ class Servicos_repositorio
         }
     }
 
+    /*
+    * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+    * │  Função para cadastrar um novo serviço                                                                        │
+    * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+    */
+    function cadastro($nome, $descricao, $idUsuario, $pdo)
+    {
+        try {
+            $stmt = $pdo->prepare("Insert into Servicos (nome, descricao, idUsuario) VALUES (:nome, :descricao, :idUsuario) ");
+
+            $stmt->execute(array(
+                ":nome" => $nome,
+                ":descricao" => $descricao,
+                ":idUsuario" => $idUsuario
+            ));
+
+            return true;
+        } catch (PDOException $err) {
+            echo $err->getMessage();
+        }
+    }
+
+
+    /*
+    * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+    * │  Função para verificar se um serviço já existe                                                                │
+    * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+    */
+    function servico_existe($nome, $pdo)
+    {
+        try {
+            $stmt = $pdo->prepare("Select * from Servicos where nome = :nome and status = 'ATIVO'  ");
+
+            $stmt->execute(array(
+                ":nome" => $nome
+            ));
+
+            while ($linha = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+               return true;
+            
+            }
+            return false;
+        } catch (PDOException $err) {
+            echo $err->getMessage();
+        }
+    }
+
     
 }
