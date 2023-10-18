@@ -16,5 +16,40 @@
 .page-footer{
   position: fixed;
   width: 100%;
-  top: 94%;
+  left: 0;
+  bottom: 0;
+}
+
+
+
+/* SIDEBAR */
+
+.wrapper{
+  display: flex;
+}
+
+.divPrincipal{
+  /* background-color: rgb(196, 87, 87); */
+  flex: 0.9;
+}
+
+.sideBar{
+  background-color: #086ceee5;
+  text-align: center;
+  color: white;
+  flex: 0.1;
+  height: 92vh;
+  box-shadow: 0 0 3px black;
+}
+
+.sideBar-li{
+  margin-bottom: 10px;
+}
+
+.sideBar ul li a{
+  color: white;
+  margin-bottom: 50px;
+  /* background-color: red; */
+  font-size: 20px;
+  margin-bottom: 50cm;
 }

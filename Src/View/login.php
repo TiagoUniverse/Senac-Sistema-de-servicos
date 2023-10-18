@@ -13,21 +13,14 @@
 </head>
 
 <body>
-  <nav class="indigo darken-3" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Sistema de Serviços</a>
-      <ul class="right hide-on-med-and-down">
-        <li><a href="#">Tiago César da Silva Lopes</a></li>
-        <li><a href="#">Sair</a></li>
-      </ul>
+  <?php require_once "Recursos/scripts.php"; ?>
 
-      <ul id="nav-mobile" class="sidenav">
-        <li><a href="#">Tiago César da Silva Lopes</a></li>
-        <li><a href="#">Sair</a></li>
-      </ul>
-      <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-    </div>
-  </nav>
+  <?php require_once "Recursos/navbar.php"; ?>
+  
+  <?php require_once "Recursos/sidebar_comeco.php"; ?>
+
   <div class="section no-pad-bot" id="index-banner">
+
     <div class="container">
       <br><br>
       <h1 class="header center black-text">Solicitação de Serviços</h1>
@@ -40,45 +33,13 @@
       <br><br>
 
     </div>
+
+    <?php require_once "Recursos/sidebar_fim.php"; ?>
   </div>
 
 
-  <footer class="page-footer orange">
-    <!-- <div class="container">
-      <div class="row">
-        <div class="col l6 s12">
-          <h5 class="white-text">Company Bio</h5>
-          <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
 
-
-        </div>
-        <div class="col l3 s12">
-          <h5 class="white-text">Settings</h5>
-          <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-            <li><a class="white-text" href="#!">Link 2</a></li>
-            <li><a class="white-text" href="#!">Link 3</a></li>
-            <li><a class="white-text" href="#!">Link 4</a></li>
-          </ul>
-        </div>
-        <div class="col l3 s12">
-          <h5 class="white-text">Connect</h5>
-          <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-            <li><a class="white-text" href="#!">Link 2</a></li>
-            <li><a class="white-text" href="#!">Link 3</a></li>
-            <li><a class="white-text" href="#!">Link 4</a></li>
-          </ul>
-        </div>
-      </div>
-    </div> -->
-    <div class="footer-copyright">
-      <div class="container">
-      © Todos os Direitos Reservados - <a class="orange-text text-lighten-3" href="http://materializecss.com">Senac, PE GTI 2023. </a>
-      </div>
-    </div>
-  </footer>
-
+  <?php require_once "Recursos/footer.php"; ?>
 
   <!--  Scripts-->
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
