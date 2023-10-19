@@ -26,7 +26,6 @@
  * ║                                                                                                                   ║
  * ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
  */
-require "C:\\xampp\\htdocs\\Termo-de-compromisso\\config.php";
 
 // require_once "Recursos/ValidaNivelDeAcesso.php";
 // ta_conectado();

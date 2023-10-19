@@ -1,0 +1,5 @@
+$_SESSION['connected'] = '1';
+      $_SESSION['idUser'] = $Usuario[0];
+      $_SESSION['nameComplete'] = $Usuario[1];
+      $_SESSION['nameUser'] = $Usuario[2];
+      $_SESSION['administrador'] = $Usuario[11];

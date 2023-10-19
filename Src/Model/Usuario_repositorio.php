@@ -34,63 +34,9 @@ use PDOException;
 class Usuario_repositorio
 {
 
-    // /*
-    // * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-    // * │  Função para listar todos os serviços já criados                                                              │
-    // * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-    // */
-    // function listar_Servicos($pdo)
-    // {
-    //     try {
-    //         $stmt = $pdo->prepare("Select * from Servicos where status = 'ATIVO' ");
-
-    //         $stmt->execute();
-
-    //         $lista_Servicos = array();
-    //         while ($linha = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-    //             $id = $linha['id'];
-    //             $nome = $linha['nome'];
-    //             $descricao = $linha['descricao'];
-    //             $status = $linha['status'];
-    //             $created = $linha['created'];
-    //             $updated = $linha['updated'];
-    //             $idUsuario = $linha['idUsuario'];
-
-    //             $lista_Servicos[] = array($id, $nome, $descricao, $status, $created, $updated, $idUsuario);
-            
-    //         }
-    //         return $lista_Servicos;
-    //     } catch (PDOException $err) {
-    //         echo $err->getMessage();
-    //     }
-    // }
-
-    // /*
-    // * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-    // * │  Função para cadastrar um novo serviço                                                                        │
-    // * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-    // */
-    // function cadastro($nome, $descricao, $idUsuario, $pdo)
-    // {
-    //     try {
-    //         $stmt = $pdo->prepare("Insert into Servicos (nome, descricao, idUsuario) VALUES (:nome, :descricao, :idUsuario) ");
-
-    //         $stmt->execute(array(
-    //             ":nome" => $nome,
-    //             ":descricao" => $descricao,
-    //             ":idUsuario" => $idUsuario
-    //         ));
-
-    //         return true;
-    //     } catch (PDOException $err) {
-    //         echo $err->getMessage();
-    //     }
-    // }
-
-
     /*
     * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-    * │  Função para consultar um                                                               │
+    * │  Função para consultar o fundador de um serviço                                                               │
     * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
     */
     function consulta_fundador($idUsuario, $pdo)
@@ -103,7 +49,7 @@ class Usuario_repositorio
             ));
 
             while ($linha = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-               return $linha['nome'];
+                return $linha['nome'];
             }
             return false;
         } catch (PDOException $err) {
@@ -111,5 +57,77 @@ class Usuario_repositorio
         }
     }
 
-    
+    /*
+    * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+    * │  Função para efetuar o login no sistema                                                                       |
+    * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+    */
+    public function login($email, $senha, $pdo)
+    {
+        try {
+
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                // echo $email;
+                // echo $senha;
+
+                $prepare = $pdo->prepare("Select email, senha from Usuario where status = 'ATIVO' and email = :email and senha = HASHBYTES('sha1', :senha )  ");
+                $prepare->bindParam(":email", $email);
+                $prepare->bindParam(":senha", $senha);
+                $result = $prepare->execute();
+
+                $result = $prepare->rowCount(); // Conta o número de resultados
+
+                echo $result;
+
+                if ($result > 0) {
+                    return true; // Há pelo menos um resultado
+                } else {
+                    return false; // Não há resultados
+                }
+            }
+        } catch (PDOException $err) {
+            echo $err->getMessage();
+        }
+    }
+
+    /*
+    * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+    * │  Função para consultar o usuário que está logando através de suas informações de login                        │
+    * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+    */
+    function consultarByLogin($email, $senha, $pdo)
+    {
+        try {
+            $stmt = $pdo->prepare("Select * from Usuario where status = 'ATIVO' and email = :email and senha = HASHBYTES('sha1', :senha)  ");
+
+            $stmt->execute(array(
+                ":email" => $email,
+                ":senha" => $senha
+            ));
+
+
+            while ($linha = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+
+                $id = $linha['id'];
+                $nome = $linha['nome'];
+                $nomeSobrenome = $linha['nomeSobrenome'];
+                $email = $linha['email'];
+                $cpf = $linha['cpf'];
+                $dataNascimento = $linha['dataNascimento'];
+                $telefone = $linha['telefone'];
+                $status = $linha['status'];
+                $created = $linha['created'];
+                $updated = $linha['updated'];
+                $idUnidade = $linha['idUnidade'];
+                $administrador = $linha['administrador'];
+
+                $Usuario = array($id, $nome, $nomeSobrenome, $email, $cpf, $dataNascimento, $telefone, $status, $created, $updated, $idUnidade, $administrador);
+
+                return $Usuario;
+            }
+            return false;
+        } catch (PDOException $err) {
+            echo $err->getMessage();
+        }
+    }
 }

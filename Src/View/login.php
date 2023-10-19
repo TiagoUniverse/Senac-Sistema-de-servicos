@@ -26,7 +26,22 @@
  * ║                                                                                                                   ║
  * ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
  */
-require "C:\\xampp\\htdocs\\Termo-de-compromisso\\config.php";
+require_once "conexao.php";
+
+require "C:\\xampp\\htdocs\\Senac-Sistema-de-servicos\\config.php";
+
+
+/*
+* ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+* │  Usuario'S SECTION                                                                                            │
+* └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+*/
+
+require_once "../model/Usuario_repositorio.php";
+
+use model\Usuario_repositorio;
+
+$Usuario_repositorio = new Usuario_repositorio();
 
 ?>
 
@@ -50,18 +65,59 @@ require "C:\\xampp\\htdocs\\Termo-de-compromisso\\config.php";
 
   <?php require_once "Recursos/scripts.php"; ?>
 
+  <?php
+
+  /*
+  * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+  * │  Login'S SECTION                                                                                              │
+  * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  */
+  if (
+    isset($_POST['status_login'])  && $_POST['status_login'] == "FAZENDO LOGIN"
+    && isset($_POST['email']) && isset($_POST['senha'])
+  ) {
+
+    $resultado_login = $Usuario_repositorio->login($_POST['email'], $_POST['senha'], $pdo);
+
+    // Se o login foi sucedido
+    if ($resultado_login > 0) {
+      echo "entrei";
+      // $Usuario = $Usuario_repositorio->consultarByLogin($_POST['email'], $_POST['senha'], $pdo);
+
+
+      // $_SESSION['connected'] = '1';
+      // $_SESSION['idUser'] = $Usuario[0];
+      // $_SESSION['nameComplete'] = $Usuario[1];
+      // $_SESSION['nameUser'] = $Usuario[2];
+      // $_SESSION['administrador'] = $Usuario[11];
+
+      // header('Location: Solicitacao de servicos.php');
+    } else {
+  ?>
+      <script>
+        M.toast({
+          html: 'Falha ao acessar a sua conta. Por favor, tente novamente.'
+        });
+      </script>
+  <?php
+    }
+  }
+
+  ?>
+
+
   <div class="secao-principal section no-pad-bot" id="index-banner">
 
     <div class="wrapper">
 
-    <!-- Div imagem -->
-    <div class=" hide-on-med-and-down">
-        <img class="img-login" src="../../Assets/Img/wallpaper/services.jpg"  style="pointer-events: none;">
-    </div>
+      <!-- Div imagem -->
+      <div class=" hide-on-med-and-down">
+        <img class="img-login" src="../../Assets/Img/wallpaper/services.jpg" style="pointer-events: none;">
+      </div>
 
       <div class="containerPrincipal-login">
         <div class="container">
-          <img class="senac-logo"  src="../../Assets/Icons/apple-touch-icon.png"  style="pointer-events: none;">
+          <img class="senac-logo" src="../../Assets/Icons/apple-touch-icon.png" style="pointer-events: none;">
           <h1 class="header center black-text">Sistema de Serviço</h1>
           <!-- <h3 class="header center black-text">Login</h3> -->
           <div class="row center">
@@ -69,9 +125,9 @@ require "C:\\xampp\\htdocs\\Termo-de-compromisso\\config.php";
           </div>
 
           <form action="login.php" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="status_login" value="FAZENDO LOGIN">
             <div class="row center">
               <div class="input-field col s12">
-                <input type="hidden" name="status_cadastro" value="CADASTRANDO UM NOVO SERVIÇO">
 
                 <div class="row">
                   <div class="row">
