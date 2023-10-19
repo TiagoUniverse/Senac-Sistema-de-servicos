@@ -31,6 +31,8 @@ namespace model;
 
 use PDOException;
 
+use \PDO;
+
 class Usuario_repositorio
 {
 
@@ -67,23 +69,43 @@ class Usuario_repositorio
         try {
 
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                // echo $email;
-                // echo $senha;
+                // valid address
+                // echo "E-mail correto";
+                //Meu servidor: "desktop-f2g3ks7\sqlexpress"
+                //Servidor do Senac: SQLSERVER
 
-                $prepare = $pdo->prepare("Select email, senha from Usuario where status = 'ATIVO' and email = :email and senha = HASHBYTES('sha1', :senha )  ");
-                $prepare->bindParam(":email", $email);
+                $servername = "SQLSERVER";
+                $dbname = "Placement";
+                $username = "tiagolopes";
+                $pwd = "gti2022";
+                try {
+                    $pdo = new PDO("sqlsrv:server=$servername ; Database=$dbname", "$username", "$pwd");
+                    // echo "Conectado com sucesso!";
+                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                } catch (Exception $e) {
+                    die(print_r($e->getMessage()));
+                }
+
+
+                $prepare = $pdo->prepare("Select email, senha from Usuario Where status = 1 and senha = HASHBYTES('sha1', :senha) and email = :email  ");
                 $prepare->bindParam(":senha", $senha);
+                $prepare->bindParam(":email", $email);
                 $result = $prepare->execute();
 
-                $result = $prepare->rowCount(); // Conta o número de resultados
-
-                echo $result;
-
-                if ($result > 0) {
-                    return true; // Há pelo menos um resultado
+                if ($result) {
+                    // echo "Consulta com sucesso!";
                 } else {
-                    return false; // Não há resultados
+                    // echo "Falha na consulta";
                 }
+
+                if ($result) {
+                    return true;
+                }
+
+                return false;
+            } else {
+                // invalid address
+                //    echo "E-mail inválido!";
             }
         } catch (PDOException $err) {
             echo $err->getMessage();
