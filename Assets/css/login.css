@@ -14,8 +14,35 @@
   }
 
 
+  .img-login{
+    width: 450px;
+    box-shadow: 5px 5px 5px black;
+  }
+
+  .senac-logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 90px;
+    margin: 0 auto;
+  }
+
+
+  .containerPrincipal-login{
+    /* background-color: blueviolet; */
+    width: 490px;
+  }
+
+
+
   @media (max-width: 768px){
     .secao-principal{
         width: 100% ;
     }
+
+    .containerPrincipal-login{
+      width: fit-content;
+    }
+
   }

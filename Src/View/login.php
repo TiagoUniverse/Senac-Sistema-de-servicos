@@ -48,49 +48,59 @@ require "C:\\xampp\\htdocs\\Termo-de-compromisso\\config.php";
 
 <body id="body_Login">
 
-<?php require_once "Recursos/scripts.php"; ?>
+  <?php require_once "Recursos/scripts.php"; ?>
 
   <div class="secao-principal section no-pad-bot" id="index-banner">
 
-    <div class="container">
-      <br><br>
-      <h1 class="header center black-text">Login</h1>
-      <div class="row center">
-        <h5 class="header col s12 light">Entre no sistema com sua conta.</h5>
-      </div>
+    <div class="wrapper">
 
-      <form action="Solicitacao de servicos.php" method="post" enctype="multipart/form-data">
-        <div class="row center">
-          <div class="input-field col s12">
-            <input type="hidden" name="status_cadastro" value="CADASTRANDO UM NOVO SERVIÇO">
-
-            <div class="row">
-              <div class="row">
-                <div class="input-field col s12">
-                  <input value="" name="email" id="email" type="email" class="validate" required>
-                  <label for="email">E-mail:</label>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="input-field col s12">
-                  <input value="" name="senha" id="senha" type="password" class="validate" required>
-                  <label for="senha">Senha:</label>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          <button type="submit" id="download-button" class="btn-large waves-effect waves-light orange">Acessar</button>
-        </div>
-      </form>
-   
-
-
+    <!-- Div imagem -->
+    <div class=" hide-on-med-and-down">
+        <img class="img-login" src="../../Assets/Img/wallpaper/services.jpg"  style="pointer-events: none;">
     </div>
 
-    <?php require_once "Recursos/sidebar_fim.php"; ?>
+      <div class="containerPrincipal-login">
+        <div class="container">
+          <img class="senac-logo"  src="../../Assets/Icons/apple-touch-icon.png"  style="pointer-events: none;">
+          <h1 class="header center black-text">Sistema de Serviço</h1>
+          <!-- <h3 class="header center black-text">Login</h3> -->
+          <div class="row center">
+            <h5 class="header col s12 light">Entre no sistema com sua conta.</h5>
+          </div>
+
+          <form action="login.php" method="post" enctype="multipart/form-data">
+            <div class="row center">
+              <div class="input-field col s12">
+                <input type="hidden" name="status_cadastro" value="CADASTRANDO UM NOVO SERVIÇO">
+
+                <div class="row">
+                  <div class="row">
+                    <div class="input-field col s12">
+                      <input value="" name="email" id="email" type="email" class="validate" required>
+                      <label for="email">E-mail:</label>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="input-field col s12">
+                      <input value="" name="senha" id="senha" type="password" class="validate" required>
+                      <label for="senha">Senha:</label>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <button type="submit" id="download-button" class="btn-large waves-effect waves-light orange">Acessar</button>
+            </div>
+          </form>
+
+        </div>
+
+      </div>
+    </div>
+
+
   </div>
 
 
