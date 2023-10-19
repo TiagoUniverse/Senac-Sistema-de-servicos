@@ -1,0 +1,21 @@
+#body_Login {
+    /* background-color: #61789a; */
+    background: url("../Img/wallpaper/bluedark.jpg");
+  }
+
+  .secao-principal{
+    background-color: white;
+    width: 50%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+  }
+
+
+  @media (max-width: 768px){
+    .secao-principal{
+        width: 100% ;
+    }
+  }
