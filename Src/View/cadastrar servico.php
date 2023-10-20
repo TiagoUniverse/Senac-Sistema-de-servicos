@@ -83,9 +83,9 @@ $Servico_repositorio = new Servicos_repositorio();
           html: 'Cadastro de um serviço com sucesso!'
         });
       </script>
-  <?php
+    <?php
     } else {
-      ?>
+    ?>
       <script>
         M.toast({
           html: 'Este serviço já foi cadastrado!'
@@ -93,7 +93,6 @@ $Servico_repositorio = new Servicos_repositorio();
       </script>
   <?php
     }
-
   }
 
   ?>
@@ -111,6 +110,7 @@ $Servico_repositorio = new Servicos_repositorio();
         <h5 class="header col s12 light">Cadastre o serviço no formulário abaixo. </h5>
       </div>
 
+      <h3 class="header col s12 light"> Informações gerais </h3>
       <form action="cadastrar servico.php" method="post" enctype="multipart/form-data">
         <div class="row center">
           <div class="input-field col s12">
@@ -133,9 +133,36 @@ $Servico_repositorio = new Servicos_repositorio();
             </div>
 
           </div>
+        </div>
 
+        <h3 class="header col s12 light"> E-mails </h3>
+        <div class="row center">
+          <div class="input-field col s12">
+            <input type="hidden" name="status_cadastro" value="CADASTRANDO UM NOVO SERVIÇO">
+
+            <div class="row">
+              <div class="row">
+                <div class="input-field col s12">
+                  <textarea id="textarea1" class="materialize-textarea"></textarea>
+                  <label for="textarea1">Textarea</label>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="input-field col s12">
+                  <input value="" name="descricao" id="descricao" type="text" class="validate" required>
+                  <label for="descricao">Descrição:</label>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="row center">
           <button type="submit" id="download-button" class="btn-large waves-effect waves-light orange">Criar novo serviço</button>
         </div>
+
       </form>
 
 

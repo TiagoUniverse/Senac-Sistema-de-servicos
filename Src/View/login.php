@@ -74,30 +74,31 @@ $Usuario_repositorio = new Usuario_repositorio();
   */
   if (isset($_POST['status_login'])  && $_POST['status_login'] == "FAZENDO LOGIN") {
 
-   $resultado = $Usuario_repositorio->login($_POST['email'], $_POST['senha'], $pdo);
+    $resultado = $Usuario_repositorio->login($_POST['email'], $_POST['senha'], $pdo);
 
-   // Se o login foi sucedido
-   if ($resultado) {
-    echo "entrei";
-    // $Usuario = $Usuario_repositorio->consultarByLogin($_POST['email'], $_POST['senha'], $pdo);
+    if ($resultado) {
+      // echo "entrei";
+      $Usuario = $Usuario_repositorio->consultarByLogin($_POST['email'], $_POST['senha'], $pdo);
 
 
-    // $_SESSION['connected'] = '1';
-    // $_SESSION['idUser'] = $Usuario[0];
-    // $_SESSION['nameComplete'] = $Usuario[1];
-    // $_SESSION['nameUser'] = $Usuario[2];
-    // $_SESSION['administrador'] = $Usuario[11];
+      $_SESSION['connected'] = '1';
+      $_SESSION['idUser'] = $Usuario[0];
+      $_SESSION['nameComplete'] = $Usuario[1];
+      $_SESSION['nameUser'] = $Usuario[2];
+      $_SESSION['administrador'] = $Usuario[11];
 
-    // header('Location: Solicitacao de servicos.php');
-  } else {
-?>
-    <script>
-      M.toast({
-        html: 'Falha ao acessar a sua conta. Por favor, tente novamente.'
-      });
-    </script>
-<?php
-  }
+      echo $_SESSION['nameUser'];
+
+      header('Location: Solicitacao de servicos.php');
+    } else {
+  ?>
+      <script>
+        M.toast({
+          html: 'Falha ao acessar a sua conta. Por favor, tente novamente.'
+        });
+      </script>
+  <?php
+    }
   }
 
   ?>

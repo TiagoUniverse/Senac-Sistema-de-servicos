@@ -59,56 +59,88 @@ class Usuario_repositorio
         }
     }
 
+    // /*
+    // * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+    // * │  Função para efetuar o login no sistema                                                                       |
+    // * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+    // */
+    // public function login($email, $senha, $pdo)
+    // {
+    //     try {
+
+    //         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    //             // valid address
+    //             // echo "E-mail correto";
+    //             //Meu servidor: "desktop-f2g3ks7\sqlexpress"
+    //             //Servidor do Senac: SQLSERVER
+
+    //             $servername = "SQLSERVER";
+    //             $dbname = "Placement";
+    //             $username = "tiagolopes";
+    //             $pwd = "gti2022";
+    //             try {
+    //                 $pdo = new PDO("sqlsrv:server=$servername ; Database=$dbname", "$username", "$pwd");
+    //                 // echo "Conectado com sucesso!";
+    //                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    //             } catch (Exception $e) {
+    //                 die(print_r($e->getMessage()));
+    //             }
+
+
+    //             $prepare = $pdo->prepare("Select email, senha from Usuario Where status = 1 and senha = HASHBYTES('sha1', :senha) and email = :email  ");
+    //             $prepare->bindParam(":senha", $senha);
+    //             $prepare->bindParam(":email", $email);
+    //             $result = $prepare->execute();
+
+    //             if ($result) {
+    //                 // echo "Consulta com sucesso!";
+    //             } else {
+    //                 // echo "Falha na consulta";
+    //             }
+
+    //             if ($result) {
+    //                 return true;
+    //             }
+
+    //             return false;
+    //         } else {
+    //             // invalid address
+    //             //    echo "E-mail inválido!";
+    //         }
+    //     } catch (PDOException $err) {
+    //         echo $err->getMessage();
+    //     }
+    // }
+
+
     /*
     * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-    * │  Função para efetuar o login no sistema                                                                       |
+    * │  Função para verificar se o login deu sucesso                                                                 │
     * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
     */
-    public function login($email, $senha, $pdo)
+    public function login($email, $senha)
     {
-        try {
+        $declaracao = "
+        Select * from Usuario
+        Where
+            senha = HASHBYTES('sha1', '{$senha}') and   email = '{$email}'  ";
 
-            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                // valid address
-                // echo "E-mail correto";
-                //Meu servidor: "desktop-f2g3ks7\sqlexpress"
-                //Servidor do Senac: SQLSERVER
+        // echo $declaracao;
 
-                $servername = "SQLSERVER";
-                $dbname = "Placement";
-                $username = "tiagolopes";
-                $pwd = "gti2022";
-                try {
-                    $pdo = new PDO("sqlsrv:server=$servername ; Database=$dbname", "$username", "$pwd");
-                    // echo "Conectado com sucesso!";
-                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                } catch (Exception $e) {
-                    die(print_r($e->getMessage()));
-                }
+        $conexao = array("Database" => $_SESSION['DB_NAME'], "CharacterSet" => "UTF-8", "UID" =>  $_SESSION['DB_USER'], "PWD" => $_SESSION['DB_PASSWORD']);
+        $link = sqlsrv_connect($_SESSION['SERVER'], $conexao);
+
+        $stmt = sqlsrv_query($link, $declaracao);
 
 
-                $prepare = $pdo->prepare("Select email, senha from Usuario Where status = 1 and senha = HASHBYTES('sha1', :senha) and email = :email  ");
-                $prepare->bindParam(":senha", $senha);
-                $prepare->bindParam(":email", $email);
-                $result = $prepare->execute();
-
-                if ($result) {
-                    // echo "Consulta com sucesso!";
-                } else {
-                    // echo "Falha na consulta";
-                }
-
-                if ($result) {
-                    return true;
-                }
-
-                return false;
-            } else {
-                // invalid address
-                //    echo "E-mail inválido!";
+        if (sqlsrv_has_rows($stmt)) {
+            while ($row = sqlsrv_fetch_array($stmt)) {
+                //   echo "row:<br>"; var_dump($row); echo "<br><br>";
+                return true;
             }
-        } catch (PDOException $err) {
-            echo $err->getMessage();
+        } else {
+            // echo "<br/>No Results were found."; 
+            return false;
         }
     }
 
@@ -120,16 +152,21 @@ class Usuario_repositorio
     function consultarByLogin($email, $senha, $pdo)
     {
         try {
-            $stmt = $pdo->prepare("Select * from Usuario where status = 'ATIVO' and email = :email and senha = HASHBYTES('sha1', :senha)  ");
 
-            $stmt->execute(array(
-                ":email" => $email,
-                ":senha" => $senha
-            ));
+            $declaracao = "
+            Select * from Usuario
+            Where
+                senha = HASHBYTES('sha1', '{$senha}') and   email = '{$email}'  ";
+
+            // echo $declaracao;
+
+            $conexao = array("Database" => $_SESSION['DB_NAME'], "CharacterSet" => "UTF-8", "UID" =>  $_SESSION['DB_USER'], "PWD" => $_SESSION['DB_PASSWORD']);
+            $link = sqlsrv_connect($_SESSION['SERVER'], $conexao);
+
+            $stmt = sqlsrv_query($link, $declaracao);
 
 
-            while ($linha = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-
+            while ($linha = sqlsrv_fetch_array($stmt)) {
                 $id = $linha['id'];
                 $nome = $linha['nome'];
                 $nomeSobrenome = $linha['nomeSobrenome'];
@@ -147,9 +184,30 @@ class Usuario_repositorio
 
                 return $Usuario;
             }
+
             return false;
         } catch (PDOException $err) {
             echo $err->getMessage();
         }
     }
+
+    // function consultar_HASHBYTES_Senha($email, $senha, $pdo)
+    // {
+    //     try {
+    //         $query = "SELECT * FROM Usuario WHERE senha = HASHBYTES('sha1', :senha)";
+    //         $stmt = $pdo->prepare($query);
+    //         $stmt->bindParam(':senha', $senha, PDO::PARAM_STR);
+    //         $stmt->execute();
+
+    //         while ($linha = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+    //             echo "entrei";
+    //             return $linha['nome'];
+    //         }
+    //     } catch (PDOException $err) {
+    //         echo $err->getMessage();
+    //     }
+    // }
+
+
+
 }
