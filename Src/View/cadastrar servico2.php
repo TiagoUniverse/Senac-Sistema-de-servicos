@@ -67,7 +67,7 @@ $lista_status = $Status_TemplateEmail_repositorio->listar_Status($pdo);
 
 
 $opcoes_Status = "";
-foreach($lista_status as $status){
+foreach ($lista_status as $status) {
   $opcoes_Status .=  "<option value= '" . $status[0] . "' > " . $status[1] . "   </option>";
 }
 
@@ -163,11 +163,15 @@ foreach($lista_status as $status){
 
                 <div class="row">
                   <div class="input-field col s12">
-                    <input value="" name="descricao" id="descricao" type="text" class="validate" required>
-                    <label for="descricao">Descrição:</label>
+                    <select>
+                      <option value="" disabled selected>Escolha uma opção</option>
+                      <?php echo $opcoes_Status ; ?>
+                    </select>
+                    <label>Tipo de e-mail:</label>
                   </div>
                 </div>
               </div>
+
 
             </div>
           </div>
@@ -179,9 +183,9 @@ foreach($lista_status as $status){
         </form>
       <?php
       } else {
-        ?>
+      ?>
         <h5>Erro no cadastro. Por favor, tente novamente.</h5>
-        <?php
+      <?php
       }
       ?>
 
@@ -192,6 +196,19 @@ foreach($lista_status as $status){
 
     <?php require_once "Recursos/sidebar_fim.php"; ?>
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var elems = document.querySelectorAll('select');
+      var instances = M.FormSelect.init(elems, options);
+    });
+
+    // Or with jQuery
+
+    $(document).ready(function() {
+      $('select').formSelect();
+    });
+  </script>
 
 
   <?php require_once "Recursos/footer.php"; ?>
