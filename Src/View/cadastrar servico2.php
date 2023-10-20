@@ -29,7 +29,7 @@
 
 require_once "conexao.php";
 
-
+// Variáveis
 $possui_info = false;
 if (isset($_POST['descricao'])  && isset($_POST['nome'])) {
   $_SESSION['nomeServico'] = $_POST['nome'];
@@ -37,6 +37,13 @@ if (isset($_POST['descricao'])  && isset($_POST['nome'])) {
 
   $possui_info = true;
 }
+
+if (!isset($_SESSION['quantidade_emails']) || $_SESSION['quantidade_emails'] == null){
+  $_SESSION['quantidade_emails'] = 1;
+}
+
+
+
 
 
 /*
@@ -70,6 +77,19 @@ $opcoes_Status = "";
 foreach ($lista_status as $status) {
   $opcoes_Status .=  "<option value= '" . $status[0] . "' > " . $status[1] . "   </option>";
 }
+
+
+$opcoesTravada_Status = "";
+$contador = 1;
+foreach ($lista_status as $status) {
+  if ($contador == 1) {
+    $opcoesTravada_Status .=  "<option selected value= '" . $status[0] . "' > " . $status[1] . "   </option>";
+  } else {
+    $opcoesTravada_Status .=  "<option value= '" . $status[0] . "' > " . $status[1] . "   </option>";
+  }
+  $contador++;
+}
+
 
 
 ?>
@@ -136,6 +156,7 @@ foreach ($lista_status as $status) {
 
     <div class="container">
       <br><br>
+      <a href="cadastrar servico.php">Voltar</a>
       <h1 class="header center black-text">Cadastro de Serviços</h1>
       <div class="row center">
         <h5 class="header col s12 light">Cadastre o serviço no formulário abaixo. </h5>
@@ -146,12 +167,46 @@ foreach ($lista_status as $status) {
       if ($possui_info == true) {
       ?>
 
-        <form action="cadastrar servico.php" method="post" enctype="multipart/form-data">
+        <form action="cadastrar servico2.php" method="post" enctype="multipart/form-data">
 
           <h3 class="header col s12 light"> 2. E-mails </h3>
           <div class="row center">
             <div class="input-field col s12">
-              <input type="hidden" name="status_cadastro" value="CADASTRANDO UM NOVO SERVIÇO">
+              <h5 class="left header col  light"> 2.1 </h5>
+
+              <div class="row">
+                <div class="row">
+                  <div class="input-field col s12">
+                    <textarea id="Descricao" class="materialize-textarea"></textarea>
+                    <label for="Descricao">Descrição do e-mail que será enviado:</label>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="input-field col s12">
+                    <select disabled>
+                      <option value="" disabled selected>Escolha uma opção</option>
+                      <?php echo $opcoesTravada_Status; ?>
+                    </select>
+                    <label>Tipo de e-mail:</label>
+                  </div>
+                </div>
+
+                <label for="ArquivoProjeto">Insira os arquivos do projeto, caso deseje. Os arquivos são opcionais.</label>
+                <div class="file-field input-field">
+                  <div class="btn">
+                    <span>Arquivo</span>
+                    <input type="file" id="ArquivoProjeto" name="ArquivoProjeto[]" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" multiple required>
+                  </div>
+                  <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text">
+                  </div>
+                </div>
+
+              </div>
+
+
+              <h5 class="left header col  light"> 2.2 </h5>
 
               <div class="row">
                 <div class="row">
@@ -165,11 +220,23 @@ foreach ($lista_status as $status) {
                   <div class="input-field col s12">
                     <select>
                       <option value="" disabled selected>Escolha uma opção</option>
-                      <?php echo $opcoes_Status ; ?>
+                      <?php echo $opcoes_Status; ?>
                     </select>
                     <label>Tipo de e-mail:</label>
                   </div>
                 </div>
+
+                <label for="ArquivoProjeto">Insira os arquivos do projeto, caso deseje. Os arquivos são opcionais.</label>
+                <div class="file-field input-field">
+                  <div class="btn">
+                    <span>Arquivo</span>
+                    <input type="file" id="ArquivoProjeto" name="ArquivoProjeto[]" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" multiple required>
+                  </div>
+                  <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text">
+                  </div>
+                </div>
+
               </div>
 
 
@@ -177,7 +244,9 @@ foreach ($lista_status as $status) {
           </div>
 
           <div class="row center">
-            <button type="submit" id="download-button" class="btn-large waves-effect waves-light orange">Criar novo serviço</button>
+
+            <button type="submit" value="adicionar_email" id="download-button" class="btn-large waves-effect waves-light orange">Adicionar um novo e-mail</button>
+            <button type="submit" value="criar_servico" id="download-button" class="btn-large waves-effect waves-light orange">Criar novo serviço</button>
           </div>
 
         </form>

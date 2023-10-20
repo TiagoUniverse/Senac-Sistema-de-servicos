@@ -32,6 +32,7 @@ require_once "conexao.php";
 
 $_SESSION['nomeServico'] = null;
 $_SESSION['descricaoServico'] = null;
+$_SESSION['quantidade_emails'] = null;
 
 /*
 * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
