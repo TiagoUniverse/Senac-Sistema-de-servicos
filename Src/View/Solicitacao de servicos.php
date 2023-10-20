@@ -29,6 +29,9 @@
 
 require_once "conexao.php";
 
+$_SESSION['nomeServico'] = null;
+$_SESSION['descricaoServico'] = null;
+
 /*
 * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 * │  Servicos'S SECTION                                                                                           │
@@ -152,11 +155,10 @@ $Usuario_repositorio = new Usuario_repositorio();
                 </div>
 
               </td>
-            <?php
+          <?php
 
               echo "</tr>";
             }
-
           } else {
             echo "<tr><td> Nenhum serviço cadastrado. </td> </tr>";
           }

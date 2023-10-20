@@ -12,10 +12,10 @@
  * ║  └─────────────────────────────────────────────────────────────────────────────────────────────────────────────┘  ║
  * ║  ┌─────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  ║
  * ║  │ @description: Cadastro de Serviço                                                                           │  ║
- * ║  │ @class: cadastrar servico                                                                                   │  ║
+ * ║  │ @class: cadastrar servico2                                                                                  │  ║
  * ║  │ @dir: View                                                                                                  │  ║
  * ║  │ @author: Tiago César da Silva Lopes                                                                         │  ║
- * ║  │ @date: 18/10/23                                                                                             │  ║
+ * ║  │ @date: 21/10/23                                                                                             │  ║
  * ║  └─────────────────────────────────────────────────────────────────────────────────────────────────────────────┘  ║
  * ║═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════║
  * ║                                                     UPGRADES                                                      ║
@@ -30,8 +30,14 @@
 require_once "conexao.php";
 
 
-$_SESSION['nomeServico'] = null;
-$_SESSION['descricaoServico'] = null;
+$possui_info = false;
+if (isset($_POST['descricao'])  && isset($_POST['nome'])) {
+  $_SESSION['nomeServico'] = $_POST['nome'];
+  $_SESSION['descricaoServico'] = $_POST['descricao'];
+
+  $possui_info = true;
+}
+
 
 /*
 * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -60,6 +66,12 @@ $Status_TemplateEmail_repositorio = new Status_TemplateEmail_repositorio();
 $lista_status = $Status_TemplateEmail_repositorio->listar_Status($pdo);
 
 
+$opcoes_Status = "";
+foreach($lista_status as $status){
+  $opcoes_Status .=  "<option value= '" . $status[0] . "' > " . $status[1] . "   </option>";
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -82,6 +94,40 @@ $lista_status = $Status_TemplateEmail_repositorio->listar_Status($pdo);
   <?php require_once "Recursos/scripts.php"; ?>
 
 
+  <?php
+  /*
+  * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+  * │  Cadastro'S SECTION                                                                                           │
+  * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  */
+  if (isset($_POST['status_cadastro']) && $_POST['status_cadastro'] == "CADASTRANDO UM NOVO SERVIÇO") {
+
+
+    $servico_existe = $Servico_repositorio->servico_existe($_POST['nome'], $pdo);
+
+    if ($servico_existe == false) {
+      $Servico_repositorio->cadastro($_POST['nome'], $_POST['descricao'], 1, $pdo);
+
+  ?>
+      <script>
+        M.toast({
+          html: 'Cadastro de um serviço com sucesso!'
+        });
+      </script>
+    <?php
+    } else {
+    ?>
+      <script>
+        M.toast({
+          html: 'Este serviço já foi cadastrado!'
+        });
+      </script>
+  <?php
+    }
+  }
+
+  ?>
+
   <?php require_once "Recursos/navbar.php"; ?>
 
   <?php require_once "Recursos/sidebar_comeco.php"; ?>
@@ -95,37 +141,51 @@ $lista_status = $Status_TemplateEmail_repositorio->listar_Status($pdo);
         <h5 class="header col s12 light">Cadastre o serviço no formulário abaixo. </h5>
       </div>
 
-      <h3 class="header col s12 light"> 1. Informações gerais </h3>
-      <form action="cadastrar servico2.php" method="post" enctype="multipart/form-data">
-        <div class="row center">
-          <div class="input-field col s12">
-            <!-- <input type="hidden" name="status_cadastro" value="CADASTRANDO UM NOVO SERVIÇO"> -->
 
-            <div class="row">
+      <?php
+      if ($possui_info == true) {
+      ?>
+
+        <form action="cadastrar servico.php" method="post" enctype="multipart/form-data">
+
+          <h3 class="header col s12 light"> 2. E-mails </h3>
+          <div class="row center">
+            <div class="input-field col s12">
+              <input type="hidden" name="status_cadastro" value="CADASTRANDO UM NOVO SERVIÇO">
+
               <div class="row">
-                <div class="input-field col s12">
-                  <input value="" name="nome" id="nome" type="text" class="validate" required>
-                  <label for="nome">Nome do serviço:</label>
+                <div class="row">
+                  <div class="input-field col s12">
+                    <textarea id="Descricao" class="materialize-textarea"></textarea>
+                    <label for="Descricao">Descrição do e-mail que será enviado:</label>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="input-field col s12">
+                    <input value="" name="descricao" id="descricao" type="text" class="validate" required>
+                    <label for="descricao">Descrição:</label>
+                  </div>
                 </div>
               </div>
 
-              <div class="row">
-                <div class="input-field col s12">
-                  <input value="" name="descricao" id="descricao" type="text" class="validate" required>
-                  <label for="descricao">Descrição:</label>
-                </div>
-              </div>
             </div>
-
           </div>
-        </div>
+
+          <div class="row center">
+            <button type="submit" id="download-button" class="btn-large waves-effect waves-light orange">Criar novo serviço</button>
+          </div>
+
+        </form>
+      <?php
+      } else {
+        ?>
+        <h5>Erro no cadastro. Por favor, tente novamente.</h5>
+        <?php
+      }
+      ?>
 
 
-        <div class="row center">
-          <button type="submit" id="download-button" class="btn-large waves-effect waves-light orange">Continuar</button>
-        </div>
-
-      </form>
 
 
     </div>
