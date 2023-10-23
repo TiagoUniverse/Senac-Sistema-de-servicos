@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
  * ║                                               Sistema de Serviços                                                 ║
@@ -27,25 +28,34 @@
  * ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
  */
 
+
 require_once "conexao.php";
 
+
 // Variáveis
+
 
 if (!isset($_SESSION['possui_info'])   || $_SESSION['possui_info'] == null) {
   $_SESSION['possui_info'] = false;
 }
 
 
+
+
 if (isset($_POST['descricao'])  && isset($_POST['nome'])) {
   $_SESSION['nomeServico'] = $_POST['nome'];
   $_SESSION['descricaoServico'] = $_POST['descricao'];
 
+
   $_SESSION['possui_info'] = true;
 }
+
 
 if (!isset($_SESSION['quantidade_emails']) || $_SESSION['quantidade_emails'] == null) {
   $_SESSION['quantidade_emails'] = 1;
 }
+
+
 
 
 /*
@@ -54,11 +64,15 @@ if (!isset($_SESSION['quantidade_emails']) || $_SESSION['quantidade_emails'] == 
 * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 */
 
+
 require_once "../model/Servicos_repositorio.php";
+
 
 use model\Servicos_repositorio;
 
+
 $Servico_repositorio = new Servicos_repositorio();
+
 
 /*
 * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -66,13 +80,20 @@ $Servico_repositorio = new Servicos_repositorio();
 * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 */
 
+
 require_once "../model/Status_TemplateEmail_repositorio.php";
+
 
 use model\Status_TemplateEmail_repositorio;
 
+
 $Status_TemplateEmail_repositorio = new Status_TemplateEmail_repositorio();
 
+
 $lista_status = $Status_TemplateEmail_repositorio->listar_Status($pdo);
+
+
+
 
 
 
@@ -81,10 +102,14 @@ $id_emailAceite = $lista_status[0][0];
 $id_emailResultado = $lista_status[1][0];
 
 
+
+
 $opcoes_Status = "";
 foreach ($lista_status as $status) {
   $opcoes_Status .=  "<option value= '" . $status[0] . "' > " . $status[1] . "   </option>";
 }
+
+
 
 
 $opcoesTravada_Status = "";
@@ -98,9 +123,11 @@ foreach ($lista_status as $status) {
   $contador++;
 }
 
+
 $contador = 1;
 $tipo_Status = count($lista_status);
 $opcaoFinal_Status = "";
+
 
 foreach ($lista_status as $status) {
   if ($contador == $tipo_Status) {
@@ -113,10 +140,15 @@ foreach ($lista_status as $status) {
 
 
 
+
+
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -124,15 +156,20 @@ foreach ($lista_status as $status) {
   <title>Cadastro de Serviços</title>
   <link href="../../Assets/Icons/android-chrome-192x192.png" rel="icon" type="image/png">
 
+
   <!-- CSS  -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="../../Assets/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
   <link href="../../Assets/css/style.css" type="text/css" rel="stylesheet" media="screen,projection" />
 </head>
 
+
 <body>
 
+
   <?php require_once "Recursos/scripts.php"; ?>
+
+
 
 
   <?php
@@ -144,10 +181,14 @@ foreach ($lista_status as $status) {
   if (isset($_POST['status_cadastro']) && $_POST['status_cadastro'] == "CADASTRANDO UM NOVO SERVIÇO") {
 
 
+
+
     $servico_existe = $Servico_repositorio->servico_existe($_POST['nome'], $pdo);
+
 
     if ($servico_existe == false) {
       $Servico_repositorio->cadastro($_POST['nome'], $_POST['descricao'], 1, $pdo);
+
 
   ?>
       <script>
@@ -167,13 +208,18 @@ foreach ($lista_status as $status) {
     }
   }
 
+
   ?>
+
 
   <?php require_once "Recursos/navbar.php"; ?>
 
+
   <?php require_once "Recursos/sidebar_comeco.php"; ?>
 
+
   <div class="section no-pad-bot" id="index-banner">
+
 
     <div class="container">
       <br><br>
@@ -184,8 +230,11 @@ foreach ($lista_status as $status) {
       </div>
 
 
+
+
       <?php
       if ($_SESSION['possui_info'] == true) {
+
 
         /*
       * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -194,15 +243,20 @@ foreach ($lista_status as $status) {
       */
         if (isset($_POST['status_email']) && $_POST['status_email'] == "USUARIO SELECIONOU A QUANTIDADE DE EMAILS") {
 
+
           $quantidadeEmails = $_POST['quantidadeEmails'];
       ?>
           <form action="cadastrar servico2.php" method="post" enctype="multipart/form-data">
 
+
             <h3 class="header col s12 light"> 2. Personalização de e-mails: </h3>
+
 
             <?php
             $email_inicial = 1;
             $email_final = $quantidadeEmails;
+
+
 
 
             for ($contador = 1; $contador <= $quantidadeEmails; $contador++) {
@@ -210,9 +264,11 @@ foreach ($lista_status as $status) {
               $removerDestinatarioID = "removerDestinatario" . $contador;
             ?>
 
+
               <div class="row center">
                 <div class="input-field col s12">
                   <h5 class="left header col  light"> <?php echo "2." . $contador; ?> </h5>
+
 
                   <div class="row">
                     <div class="row">
@@ -222,11 +278,13 @@ foreach ($lista_status as $status) {
                       </div>
                     </div>
 
+
                     <!-- Email destinatario -->
                     <div class="row">
                       <label class="left">E-mails destinatários:</label>
                       <div class="input-field col s12">
-                      
+
+
                         <div class="destinatario-container">
                           <input type="email" name="destinatario[]" required>
                         </div>
@@ -237,15 +295,18 @@ foreach ($lista_status as $status) {
 
 
 
+
+
+
                     <?php
                     // Tipo de e-mail pré definido
-
+        
                     if ($contador == $email_inicial) {
                     ?>
                       <input type="hidden" name="tipo_email[]" value="<?php echo $id_emailAceite;  ?>">
                       <div class="row">
                         <div class="input-field col s12">
-                          <select disabled>
+                          <select id="tipoEmail<?php echo $contador; ?>" name="tipo_email[]" disabled>
                             <option value="" disabled selected>Escolha uma opção</option>
                             <?php echo $opcoesTravada_Status; ?>
                           </select>
@@ -258,7 +319,7 @@ foreach ($lista_status as $status) {
                       <input type="hidden" name="tipo_email[]" value="<?php echo $id_emailResultado;  ?>">
                       <div class="row">
                         <div class="input-field col s12">
-                          <select disabled>
+                          <select id="tipoEmail<?php echo $contador; ?>" name="tipo_email[]" disabled>
                             <option value="" disabled selected>Escolha uma opção</option>
                             <?php echo $opcaoFinal_Status; ?>
                           </select>
@@ -270,7 +331,7 @@ foreach ($lista_status as $status) {
                     ?>
                       <div class="row">
                         <div class="input-field col s12">
-                          <select name="tipo_email[]">
+                          <select  id="tipoEmail<?php echo $contador; ?>" name="tipo_email[]">
                             <option value="" disabled selected>Escolha uma opção</option>
                             <?php echo $opcoes_Status; ?>
                           </select>
@@ -281,10 +342,19 @@ foreach ($lista_status as $status) {
                     }
                     ?>
 
+                    <div class="row">
+                      <div class="input-field col s12">
+                        <textarea id="emailAceite<?php echo $contador; ?>" class="materialize-textarea" style="display: none;" required></textarea>
+                        <label for="emailAceite<?php echo $contador; ?>"  >Caso tenha selecionado 'Email de aceite', por favor informe o texto que o colaborador irá visualizar na tela de aceite:</label>
+                      </div>
+                    </div>
 
 
 
-                    <label  for="ArquivoProjeto">Insira os anexos do email, caso deseje. Os arquivos são opcionais.</label>
+
+
+                    <br>
+                    <label for="ArquivoProjeto">Insira os anexos do email, caso deseje. Os arquivos são opcionais.</label>
                     <div class="file-field input-field">
                       <div class="btn">
                         <span>Arquivo</span>
@@ -295,19 +365,25 @@ foreach ($lista_status as $status) {
                       </div>
                     </div>
 
+
                   </div>
+
+
 
 
                 </div>
               </div>
 
+
             <?php
             }
             ?>
 
+
             <div class="row center">
               <button type="submit" value="criar_servico" id="download-button" class="btn-large waves-effect waves-light orange">Criar novo serviço</button>
             </div>
+
 
           </form>
         <?php
@@ -322,11 +398,13 @@ foreach ($lista_status as $status) {
           <img src="../../Assets/Img/aviso email.png" class="center img-emails">
           <h4 class="header center black-text">Informe a quantidade de e-mails deste serviço:</h4>
 
+
           <form action="cadastrar servico2.php" method="POST">
             <input type="hidden" name="status_email" value="USUARIO SELECIONOU A QUANTIDADE DE EMAILS">
             <p class="range-field">
               <input type="range" value="2" id="quantidadeEmails" name="quantidadeEmails" min="2" max="5" />
             </p>
+
 
             <div class="row center">
               <button type="submit" id="download-button" class="btn-large waves-effect waves-light orange">Continuar</button>
@@ -334,11 +412,17 @@ foreach ($lista_status as $status) {
           </form>
 
 
+
+
           <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js" **defer**></script>
         <?php
         }
 
+
         ?>
+
+
+
 
 
 
@@ -358,10 +442,16 @@ foreach ($lista_status as $status) {
 
 
 
+
+
+
+
     </div>
+
 
     <?php require_once "Recursos/sidebar_fim.php"; ?>
   </div>
+
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -369,7 +459,9 @@ foreach ($lista_status as $status) {
       var instances = M.FormSelect.init(elems, options);
     });
 
+
     // Or with jQuery
+
 
     $(document).ready(function() {
       $('select').formSelect();
@@ -377,7 +469,31 @@ foreach ($lista_status as $status) {
   </script>
 
 
-  <!-- Seção do formulário -->
+
+  <!-- Template_Aceite -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      <?php
+      for ($contador = 1; $contador <= $quantidadeEmails; $contador++) {
+      ?>
+        const tipoEmailSelect<?php echo $contador; ?> = document.getElementById("tipoEmail<?php echo $contador; ?>");
+        const emailAceiteTextarea<?php echo $contador; ?> = document.getElementById("emailAceite<?php echo $contador; ?>");
+
+        tipoEmailSelect<?php echo $contador; ?>.addEventListener("change", function() {
+          if (tipoEmailSelect<?php echo $contador; ?>.value === "1") {
+            emailAceiteTextarea<?php echo $contador; ?>.style.display = "block";
+          } else {
+            emailAceiteTextarea<?php echo $contador; ?>.style.display = "none";
+          }
+        });
+      <?php
+      }
+      ?>
+    });
+  </script>
+
+
+  <!-- Destinatario -->
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       <?php
@@ -388,6 +504,7 @@ foreach ($lista_status as $status) {
         const adicionarDestinatarioButton<?php echo $contador; ?> = document.getElementById("<?php echo $adicionarDestinatarioID; ?>");
         const removerDestinatarioButton<?php echo $contador; ?> = document.getElementById("<?php echo $removerDestinatarioID; ?>");
 
+
         adicionarDestinatarioButton<?php echo $contador; ?>.addEventListener("click", function() {
           const novoCampoDestinatario = document.createElement("input");
           novoCampoDestinatario.type = "email";
@@ -396,6 +513,7 @@ foreach ($lista_status as $status) {
           const destinatarioContainer = adicionarDestinatarioButton<?php echo $contador; ?>.parentNode.querySelector(".destinatario-container");
           destinatarioContainer.appendChild(novoCampoDestinatario);
         });
+
 
         removerDestinatarioButton<?php echo $contador; ?>.addEventListener("click", function() {
           const camposDestinatario = removerDestinatarioButton<?php echo $contador; ?>.parentNode.querySelector(".destinatario-container").querySelectorAll("input[type=email]");
@@ -411,8 +529,13 @@ foreach ($lista_status as $status) {
 
 
 
+
+
+
   <?php require_once "Recursos/footer.php"; ?>
 
+
 </body>
+
 
 </html>
