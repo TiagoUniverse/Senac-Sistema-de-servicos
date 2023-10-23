@@ -284,7 +284,7 @@ foreach ($lista_status as $status) {
 
 
 
-                    <label for="ArquivoProjeto">Insira os anexos do email, caso deseje. Os arquivos são opcionais.</label>
+                    <label  for="ArquivoProjeto">Insira os anexos do email, caso deseje. Os arquivos são opcionais.</label>
                     <div class="file-field input-field">
                       <div class="btn">
                         <span>Arquivo</span>
