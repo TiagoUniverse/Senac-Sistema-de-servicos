@@ -36,8 +36,6 @@ if (!isset($_SESSION['possui_info'])   || $_SESSION['possui_info'] == null) {
 }
 
 
-
-
 if (isset($_POST['descricao'])  && isset($_POST['nome'])) {
   $_SESSION['nomeServico'] = $_POST['nome'];
   $_SESSION['descricaoServico'] = $_POST['descricao'];
@@ -48,9 +46,6 @@ if (isset($_POST['descricao'])  && isset($_POST['nome'])) {
 if (!isset($_SESSION['quantidade_emails']) || $_SESSION['quantidade_emails'] == null) {
   $_SESSION['quantidade_emails'] = 1;
 }
-
-
-
 
 
 /*
@@ -211,6 +206,8 @@ foreach ($lista_status as $status) {
 
 
             for ($contador = 1; $contador <= $quantidadeEmails; $contador++) {
+              $adicionarDestinatarioID = "adicionarDestinatario" . $contador;
+              $removerDestinatarioID = "removerDestinatario" . $contador;
             ?>
 
               <div class="row center">
@@ -225,10 +222,14 @@ foreach ($lista_status as $status) {
                       </div>
                     </div>
 
+                    <!-- Email destinatario -->
                     <div class="row">
                       <div class="input-field col s12">
-                        <input value="" name="descricao" id="descricao" type="text" class="validate" required>
-                        <label for="descricao">Descrição:</label>
+                        <div class="destinatario-container">
+                          <input type="email" name="destinatario[]" required>
+                        </div>
+                        <button type="button" id="<?php echo $adicionarDestinatarioID; ?>">Adicionar Destinatário</button>
+                        <button type="button" id="<?php echo $removerDestinatarioID; ?>">Remover Destinatário</button>
                       </div>
                     </div>
 
@@ -302,7 +303,6 @@ foreach ($lista_status as $status) {
             }
             ?>
 
-
             <div class="row center">
               <button type="submit" value="criar_servico" id="download-button" class="btn-large waves-effect waves-light orange">Criar novo serviço</button>
             </div>
@@ -375,6 +375,37 @@ foreach ($lista_status as $status) {
   </script>
 
 
+  <!-- Seção do formulário -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      <?php
+      for ($contador = 1; $contador <= $quantidadeEmails; $contador++) {
+        $adicionarDestinatarioID = "adicionarDestinatario" . $contador;
+        $removerDestinatarioID = "removerDestinatario" . $contador;
+      ?>
+        const adicionarDestinatarioButton<?php echo $contador; ?> = document.getElementById("<?php echo $adicionarDestinatarioID; ?>");
+        const removerDestinatarioButton<?php echo $contador; ?> = document.getElementById("<?php echo $removerDestinatarioID; ?>");
+
+        adicionarDestinatarioButton<?php echo $contador; ?>.addEventListener("click", function() {
+          const novoCampoDestinatario = document.createElement("input");
+          novoCampoDestinatario.type = "email";
+          novoCampoDestinatario.name = "destinatario[]";
+          novoCampoDestinatario.required = true;
+          const destinatarioContainer = adicionarDestinatarioButton<?php echo $contador; ?>.parentNode.querySelector(".destinatario-container");
+          destinatarioContainer.appendChild(novoCampoDestinatario);
+        });
+
+        removerDestinatarioButton<?php echo $contador; ?>.addEventListener("click", function() {
+          const camposDestinatario = removerDestinatarioButton<?php echo $contador; ?>.parentNode.querySelector(".destinatario-container").querySelectorAll("input[type=email]");
+          if (camposDestinatario.length > 1) {
+            camposDestinatario[camposDestinatario.length - 1].remove();
+          }
+        });
+      <?php
+      }
+      ?>
+    });
+  </script>
 
 
 
