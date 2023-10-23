@@ -220,8 +220,15 @@ foreach ($lista_status as $status) {
                   <div class="row">
                     <div class="row">
                       <div class="input-field col s12">
-                        <textarea id="Descricao" class="materialize-textarea"></textarea>
+                        <textarea id="Descricao" class="materialize-textarea" required></textarea>
                         <label for="Descricao">Descrição do e-mail que será enviado:</label>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="input-field col s12">
+                        <input value="" name="descricao" id="descricao" type="text" class="validate" required>
+                        <label for="descricao">Descrição:</label>
                       </div>
                     </div>
 
@@ -232,7 +239,7 @@ foreach ($lista_status as $status) {
 
                     if ($contador == $email_inicial) {
                     ?>
-                      <input type="hidden" name="tipo_email[]" value="<?php echo $id_emailAceite;  ?>" >
+                      <input type="hidden" name="tipo_email[]" value="<?php echo $id_emailAceite;  ?>">
                       <div class="row">
                         <div class="input-field col s12">
                           <select disabled>
@@ -245,7 +252,7 @@ foreach ($lista_status as $status) {
                     <?php
                     } else if ($contador == $email_final) {
                     ?>
-                      <input type="hidden" name="tipo_email[]" value="<?php echo $id_emailResultado;  ?>" >
+                      <input type="hidden" name="tipo_email[]" value="<?php echo $id_emailResultado;  ?>">
                       <div class="row">
                         <div class="input-field col s12">
                           <select disabled>
@@ -257,7 +264,7 @@ foreach ($lista_status as $status) {
                       </div>
                     <?php
                     } else {
-                      ?>
+                    ?>
                       <div class="row">
                         <div class="input-field col s12">
                           <select name="tipo_email[]">
@@ -272,13 +279,13 @@ foreach ($lista_status as $status) {
                     ?>
 
 
-                    
 
-                    <label for="ArquivoProjeto">Insira os arquivos do projeto, caso deseje. Os arquivos são opcionais.</label>
+
+                    <label for="ArquivoProjeto">Insira os anexos do email, caso deseje. Os arquivos são opcionais.</label>
                     <div class="file-field input-field">
                       <div class="btn">
                         <span>Arquivo</span>
-                        <input type="file" id="ArquivoProjeto" name="ArquivoProjeto[]" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" multiple required>
+                        <input type="file" id="ArquivoProjeto" name="ArquivoProjeto[]" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" multiple>
                       </div>
                       <div class="file-path-wrapper">
                         <input class="file-path validate" type="text">
