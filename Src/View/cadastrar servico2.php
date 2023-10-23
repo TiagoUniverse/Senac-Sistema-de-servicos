@@ -31,7 +31,7 @@ require_once "conexao.php";
 
 // Variáveis
 
-if (!isset($_SESSION['possui_info'])   || $_SESSION['possui_info'] == null){
+if (!isset($_SESSION['possui_info'])   || $_SESSION['possui_info'] == null) {
   $_SESSION['possui_info'] = false;
 }
 
@@ -80,6 +80,12 @@ $Status_TemplateEmail_repositorio = new Status_TemplateEmail_repositorio();
 $lista_status = $Status_TemplateEmail_repositorio->listar_Status($pdo);
 
 
+
+// Id do email de aceite de resultado
+$id_emailAceite = $lista_status[0][0];
+$id_emailResultado = $lista_status[1][0];
+
+
 $opcoes_Status = "";
 foreach ($lista_status as $status) {
   $opcoes_Status .=  "<option value= '" . $status[0] . "' > " . $status[1] . "   </option>";
@@ -93,6 +99,19 @@ foreach ($lista_status as $status) {
     $opcoesTravada_Status .=  "<option selected value= '" . $status[0] . "' > " . $status[1] . "   </option>";
   } else {
     $opcoesTravada_Status .=  "<option value= '" . $status[0] . "' > " . $status[1] . "   </option>";
+  }
+  $contador++;
+}
+
+$contador = 1;
+$tipo_Status = count($lista_status);
+$opcaoFinal_Status = "";
+
+foreach ($lista_status as $status) {
+  if ($contador == $tipo_Status) {
+    $opcaoFinal_Status .=  "<option selected value= '" . $status[0] . "' > " . $status[1] . "   </option>";
+  } else {
+    $opcaoFinal_Status .=  "<option value= '" . $status[0] . "' > " . $status[1] . "   </option>";
   }
   $contador++;
 }
@@ -179,86 +198,105 @@ foreach ($lista_status as $status) {
       * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
       */
         if (isset($_POST['status_email']) && $_POST['status_email'] == "USUARIO SELECIONOU A QUANTIDADE DE EMAILS") {
+
+          $quantidadeEmails = $_POST['quantidadeEmails'];
       ?>
           <form action="cadastrar servico2.php" method="post" enctype="multipart/form-data">
 
-            <h3 class="header col s12 light"> 2. E-mails </h3>
-            <div class="row center">
-              <div class="input-field col s12">
-                <h5 class="left header col  light"> 2.1 </h5>
+            <h3 class="header col s12 light"> 2. Personalização de e-mails: </h3>
 
-                <div class="row">
+            <?php
+            $email_inicial = 1;
+            $email_final = $quantidadeEmails;
+
+
+            for ($contador = 1; $contador <= $quantidadeEmails; $contador++) {
+            ?>
+
+              <div class="row center">
+                <div class="input-field col s12">
+                  <h5 class="left header col  light"> <?php echo "2." . $contador; ?> </h5>
+
                   <div class="row">
-                    <div class="input-field col s12">
-                      <textarea id="Descricao" class="materialize-textarea"></textarea>
-                      <label for="Descricao">Descrição do e-mail que será enviado:</label>
+                    <div class="row">
+                      <div class="input-field col s12">
+                        <textarea id="Descricao" class="materialize-textarea"></textarea>
+                        <label for="Descricao">Descrição do e-mail que será enviado:</label>
+                      </div>
                     </div>
+
+
+
+                    <?php
+                    // Tipo de e-mail pré definido
+
+                    if ($contador == $email_inicial) {
+                    ?>
+                      <input type="hidden" name="tipo_email[]" value="<?php echo $id_emailAceite;  ?>" >
+                      <div class="row">
+                        <div class="input-field col s12">
+                          <select disabled>
+                            <option value="" disabled selected>Escolha uma opção</option>
+                            <?php echo $opcoesTravada_Status; ?>
+                          </select>
+                          <label>Tipo de e-mail:</label>
+                        </div>
+                      </div>
+                    <?php
+                    } else if ($contador == $email_final) {
+                    ?>
+                      <input type="hidden" name="tipo_email[]" value="<?php echo $id_emailResultado;  ?>" >
+                      <div class="row">
+                        <div class="input-field col s12">
+                          <select disabled>
+                            <option value="" disabled selected>Escolha uma opção</option>
+                            <?php echo $opcaoFinal_Status; ?>
+                          </select>
+                          <label>Tipo de e-mail:</label>
+                        </div>
+                      </div>
+                    <?php
+                    } else {
+                      ?>
+                      <div class="row">
+                        <div class="input-field col s12">
+                          <select name="tipo_email[]">
+                            <option value="" disabled selected>Escolha uma opção</option>
+                            <?php echo $opcoes_Status; ?>
+                          </select>
+                          <label>Tipo de e-mail:</label>
+                        </div>
+                      </div>
+                    <?php
+                    }
+                    ?>
+
+
+                    
+
+                    <label for="ArquivoProjeto">Insira os arquivos do projeto, caso deseje. Os arquivos são opcionais.</label>
+                    <div class="file-field input-field">
+                      <div class="btn">
+                        <span>Arquivo</span>
+                        <input type="file" id="ArquivoProjeto" name="ArquivoProjeto[]" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" multiple required>
+                      </div>
+                      <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text">
+                      </div>
+                    </div>
+
                   </div>
 
-                  <div class="row">
-                    <div class="input-field col s12">
-                      <select disabled>
-                        <option value="" disabled selected>Escolha uma opção</option>
-                        <?php echo $opcoesTravada_Status; ?>
-                      </select>
-                      <label>Tipo de e-mail:</label>
-                    </div>
-                  </div>
-
-                  <label for="ArquivoProjeto">Insira os arquivos do projeto, caso deseje. Os arquivos são opcionais.</label>
-                  <div class="file-field input-field">
-                    <div class="btn">
-                      <span>Arquivo</span>
-                      <input type="file" id="ArquivoProjeto" name="ArquivoProjeto[]" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" multiple required>
-                    </div>
-                    <div class="file-path-wrapper">
-                      <input class="file-path validate" type="text">
-                    </div>
-                  </div>
 
                 </div>
-
-
-                <h5 class="left header col  light"> 2.2 </h5>
-
-                <div class="row">
-                  <div class="row">
-                    <div class="input-field col s12">
-                      <textarea id="Descricao" class="materialize-textarea"></textarea>
-                      <label for="Descricao">Descrição do e-mail que será enviado:</label>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="input-field col s12">
-                      <select>
-                        <option value="" disabled selected>Escolha uma opção</option>
-                        <?php echo $opcoes_Status; ?>
-                      </select>
-                      <label>Tipo de e-mail:</label>
-                    </div>
-                  </div>
-
-                  <label for="ArquivoProjeto">Insira os arquivos do projeto, caso deseje. Os arquivos são opcionais.</label>
-                  <div class="file-field input-field">
-                    <div class="btn">
-                      <span>Arquivo</span>
-                      <input type="file" id="ArquivoProjeto" name="ArquivoProjeto[]" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" multiple required>
-                    </div>
-                    <div class="file-path-wrapper">
-                      <input class="file-path validate" type="text">
-                    </div>
-                  </div>
-
-                </div>
-
-
               </div>
-            </div>
+
+            <?php
+            }
+            ?>
+
 
             <div class="row center">
-
-              <button type="submit" value="adicionar_email" id="download-button" class="btn-large waves-effect waves-light orange">Adicionar um novo e-mail</button>
               <button type="submit" value="criar_servico" id="download-button" class="btn-large waves-effect waves-light orange">Criar novo serviço</button>
             </div>
 
