@@ -300,7 +300,7 @@ foreach ($lista_status as $status) {
 
                     <?php
                     // Tipo de e-mail pré definido
-        
+
                     if ($contador == $email_inicial) {
                     ?>
                       <input type="hidden" name="tipo_email[]" value="<?php echo $id_emailAceite;  ?>">
@@ -331,7 +331,7 @@ foreach ($lista_status as $status) {
                     ?>
                       <div class="row">
                         <div class="input-field col s12">
-                          <select  id="tipoEmail<?php echo $contador; ?>" name="tipo_email[]">
+                          <select id="tipoEmail<?php echo $contador; ?>" name="tipo_email[]">
                             <option value="" disabled selected>Escolha uma opção</option>
                             <?php echo $opcoes_Status; ?>
                           </select>
@@ -340,14 +340,33 @@ foreach ($lista_status as $status) {
                       </div>
                     <?php
                     }
+
+
+                    // Template de Aceite do 1ª email
+                    if ($contador == 1) {
                     ?>
 
-                    <div class="row">
-                      <div class="input-field col s12">
-                        <textarea id="emailAceite<?php echo $contador; ?>" class="materialize-textarea" style="display: none;" required></textarea>
-                        <label for="emailAceite<?php echo $contador; ?>"  >Caso tenha selecionado 'Email de aceite', por favor informe o texto que o colaborador irá visualizar na tela de aceite:</label>
+                      <div class="row">
+                        <div class="input-field col s12">
+                          <textarea name="templateAceite[]" id="emailAceite<?php echo $contador; ?>" class="materialize-textarea" required></textarea>
+                          <label for="emailAceite<?php echo $contador; ?>">Caso tenha selecionado 'Email de aceite', por favor informe o texto que o colaborador irá visualizar na tela de aceite:</label>
+                        </div>
                       </div>
-                    </div>
+                    <?php
+                    } else {
+                    ?>
+                      <div class="row">
+                        <div class="input-field col s12">
+                          <textarea name="templateAceite[]" id="emailAceite<?php echo $contador; ?>" class="materialize-textarea" style="display: none;" required></textarea>
+                          <label for="emailAceite<?php echo $contador; ?>">Caso tenha selecionado 'Email de aceite', por favor informe o texto que o colaborador irá visualizar na tela de aceite:</label>
+                        </div>
+                      </div>
+                    <?php
+                    }
+                    ?>
+
+
+
 
 
 
