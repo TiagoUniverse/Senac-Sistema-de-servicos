@@ -224,12 +224,14 @@ foreach ($lista_status as $status) {
 
                     <!-- Email destinatario -->
                     <div class="row">
+                      <label class="left">E-mails destinatários:</label>
                       <div class="input-field col s12">
+                      
                         <div class="destinatario-container">
                           <input type="email" name="destinatario[]" required>
                         </div>
-                        <button type="button" id="<?php echo $adicionarDestinatarioID; ?>">Adicionar Destinatário</button>
-                        <button type="button" id="<?php echo $removerDestinatarioID; ?>">Remover Destinatário</button>
+                        <button class="btn" type="button" id="<?php echo $adicionarDestinatarioID; ?>">Adicionar Destinatário</button>
+                        <button class="btn" type="button" id="<?php echo $removerDestinatarioID; ?>">Remover Destinatário</button>
                       </div>
                     </div>
 
