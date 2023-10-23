@@ -30,15 +30,22 @@
 require_once "conexao.php";
 
 // Variáveis
-$possui_info = false;
+
+if (!isset($_SESSION['possui_info'])   || $_SESSION['possui_info'] == null){
+  $_SESSION['possui_info'] = false;
+}
+
+
+
+
 if (isset($_POST['descricao'])  && isset($_POST['nome'])) {
   $_SESSION['nomeServico'] = $_POST['nome'];
   $_SESSION['descricaoServico'] = $_POST['descricao'];
 
-  $possui_info = true;
+  $_SESSION['possui_info'] = true;
 }
 
-if (!isset($_SESSION['quantidade_emails']) || $_SESSION['quantidade_emails'] == null){
+if (!isset($_SESSION['quantidade_emails']) || $_SESSION['quantidade_emails'] == null) {
   $_SESSION['quantidade_emails'] = 1;
 }
 
@@ -164,94 +171,137 @@ foreach ($lista_status as $status) {
 
 
       <?php
-      if ($possui_info == true) {
+      if ($_SESSION['possui_info'] == true) {
+
+        /*
+      * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+      * │  Usuário já selecionou a quantidade de e-mails                                                                │
+      * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+      */
+        if (isset($_POST['status_email']) && $_POST['status_email'] == "USUARIO SELECIONOU A QUANTIDADE DE EMAILS") {
       ?>
+          <form action="cadastrar servico2.php" method="post" enctype="multipart/form-data">
 
-        <form action="cadastrar servico2.php" method="post" enctype="multipart/form-data">
-
-          <h3 class="header col s12 light"> 2. E-mails </h3>
-          <div class="row center">
-            <div class="input-field col s12">
-              <h5 class="left header col  light"> 2.1 </h5>
-
-              <div class="row">
-                <div class="row">
-                  <div class="input-field col s12">
-                    <textarea id="Descricao" class="materialize-textarea"></textarea>
-                    <label for="Descricao">Descrição do e-mail que será enviado:</label>
-                  </div>
-                </div>
+            <h3 class="header col s12 light"> 2. E-mails </h3>
+            <div class="row center">
+              <div class="input-field col s12">
+                <h5 class="left header col  light"> 2.1 </h5>
 
                 <div class="row">
-                  <div class="input-field col s12">
-                    <select disabled>
-                      <option value="" disabled selected>Escolha uma opção</option>
-                      <?php echo $opcoesTravada_Status; ?>
-                    </select>
-                    <label>Tipo de e-mail:</label>
+                  <div class="row">
+                    <div class="input-field col s12">
+                      <textarea id="Descricao" class="materialize-textarea"></textarea>
+                      <label for="Descricao">Descrição do e-mail que será enviado:</label>
+                    </div>
                   </div>
+
+                  <div class="row">
+                    <div class="input-field col s12">
+                      <select disabled>
+                        <option value="" disabled selected>Escolha uma opção</option>
+                        <?php echo $opcoesTravada_Status; ?>
+                      </select>
+                      <label>Tipo de e-mail:</label>
+                    </div>
+                  </div>
+
+                  <label for="ArquivoProjeto">Insira os arquivos do projeto, caso deseje. Os arquivos são opcionais.</label>
+                  <div class="file-field input-field">
+                    <div class="btn">
+                      <span>Arquivo</span>
+                      <input type="file" id="ArquivoProjeto" name="ArquivoProjeto[]" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" multiple required>
+                    </div>
+                    <div class="file-path-wrapper">
+                      <input class="file-path validate" type="text">
+                    </div>
+                  </div>
+
                 </div>
 
-                <label for="ArquivoProjeto">Insira os arquivos do projeto, caso deseje. Os arquivos são opcionais.</label>
-                <div class="file-field input-field">
-                  <div class="btn">
-                    <span>Arquivo</span>
-                    <input type="file" id="ArquivoProjeto" name="ArquivoProjeto[]" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" multiple required>
+
+                <h5 class="left header col  light"> 2.2 </h5>
+
+                <div class="row">
+                  <div class="row">
+                    <div class="input-field col s12">
+                      <textarea id="Descricao" class="materialize-textarea"></textarea>
+                      <label for="Descricao">Descrição do e-mail que será enviado:</label>
+                    </div>
                   </div>
-                  <div class="file-path-wrapper">
-                    <input class="file-path validate" type="text">
+
+                  <div class="row">
+                    <div class="input-field col s12">
+                      <select>
+                        <option value="" disabled selected>Escolha uma opção</option>
+                        <?php echo $opcoes_Status; ?>
+                      </select>
+                      <label>Tipo de e-mail:</label>
+                    </div>
                   </div>
+
+                  <label for="ArquivoProjeto">Insira os arquivos do projeto, caso deseje. Os arquivos são opcionais.</label>
+                  <div class="file-field input-field">
+                    <div class="btn">
+                      <span>Arquivo</span>
+                      <input type="file" id="ArquivoProjeto" name="ArquivoProjeto[]" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" multiple required>
+                    </div>
+                    <div class="file-path-wrapper">
+                      <input class="file-path validate" type="text">
+                    </div>
+                  </div>
+
                 </div>
+
 
               </div>
-
-
-              <h5 class="left header col  light"> 2.2 </h5>
-
-              <div class="row">
-                <div class="row">
-                  <div class="input-field col s12">
-                    <textarea id="Descricao" class="materialize-textarea"></textarea>
-                    <label for="Descricao">Descrição do e-mail que será enviado:</label>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="input-field col s12">
-                    <select>
-                      <option value="" disabled selected>Escolha uma opção</option>
-                      <?php echo $opcoes_Status; ?>
-                    </select>
-                    <label>Tipo de e-mail:</label>
-                  </div>
-                </div>
-
-                <label for="ArquivoProjeto">Insira os arquivos do projeto, caso deseje. Os arquivos são opcionais.</label>
-                <div class="file-field input-field">
-                  <div class="btn">
-                    <span>Arquivo</span>
-                    <input type="file" id="ArquivoProjeto" name="ArquivoProjeto[]" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" multiple required>
-                  </div>
-                  <div class="file-path-wrapper">
-                    <input class="file-path validate" type="text">
-                  </div>
-                </div>
-
-              </div>
-
-
             </div>
-          </div>
 
-          <div class="row center">
+            <div class="row center">
 
-            <button type="submit" value="adicionar_email" id="download-button" class="btn-large waves-effect waves-light orange">Adicionar um novo e-mail</button>
-            <button type="submit" value="criar_servico" id="download-button" class="btn-large waves-effect waves-light orange">Criar novo serviço</button>
-          </div>
+              <button type="submit" value="adicionar_email" id="download-button" class="btn-large waves-effect waves-light orange">Adicionar um novo e-mail</button>
+              <button type="submit" value="criar_servico" id="download-button" class="btn-large waves-effect waves-light orange">Criar novo serviço</button>
+            </div>
 
-        </form>
+          </form>
+        <?php
+          /*
+      * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+      * │  Usuário vai escolher a quantidade de emails                                                                  │
+      * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+      */
+        } else {
+        ?>
+          <br>
+          <img src="../../Assets/Img/aviso email.png" class="center img-emails">
+          <h4 class="header center black-text">Informe a quantidade de e-mails deste serviço:</h4>
+
+          <form action="cadastrar servico2.php" method="POST">
+            <input type="hidden" name="status_email" value="USUARIO SELECIONOU A QUANTIDADE DE EMAILS">
+            <p class="range-field">
+              <input type="range" value="2" id="quantidadeEmails" name="quantidadeEmails" min="2" max="5" />
+            </p>
+
+            <div class="row center">
+              <button type="submit" id="download-button" class="btn-large waves-effect waves-light orange">Continuar</button>
+            </div>
+          </form>
+
+
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js" **defer**></script>
+        <?php
+        }
+
+        ?>
+
+
+
       <?php
       } else {
+        /*
+      * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+      * │  Error de cadastro: Usuário tentou acessar tela sem ter definido o nome e a descrição do serviço              │
+      * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+      */
       ?>
         <h5>Erro no cadastro. Por favor, tente novamente.</h5>
       <?php
@@ -278,6 +328,9 @@ foreach ($lista_status as $status) {
       $('select').formSelect();
     });
   </script>
+
+
+
 
 
   <?php require_once "Recursos/footer.php"; ?>

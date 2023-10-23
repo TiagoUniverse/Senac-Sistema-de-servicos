@@ -8,3 +8,5 @@ $_SESSION['nomeServico'] = $_POST['nome'];
   $_SESSION['descricaoServico'] = $_POST['descricao'];
 
 $_SESSION['quantidade_emails'] = 1;
+
+$_SESSION['possui_info']

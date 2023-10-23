@@ -55,3 +55,16 @@
   font-size: 20px;
   margin-bottom: 50cm;
 }
+
+
+/* imagem quantidade emails */
+
+.img-emails{
+  width: 400px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  pointer-events: none;
+}
