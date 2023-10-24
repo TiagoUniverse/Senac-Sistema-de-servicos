@@ -246,8 +246,8 @@ foreach ($lista_status as $status) {
 
           $quantidadeEmails = $_POST['quantidadeEmails'];
       ?>
-          <form action="cadastrar servico2.php" method="post" enctype="multipart/form-data">
-
+          <form action="cadastrar servico3.php" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="quantidadeEmails" value="<?php echo $quantidadeEmails; ?>">
 
             <h3 class="header col s12 light"> 2. Personalização de e-mails: </h3>
 
@@ -273,7 +273,7 @@ foreach ($lista_status as $status) {
                   <div class="row">
                     <div class="row">
                       <div class="input-field col s12">
-                        <textarea id="Descricao" class="materialize-textarea" required></textarea>
+                        <textarea id="Descricao" name="Descricao[]" class="materialize-textarea" required></textarea>
                         <label for="Descricao">Descrição do e-mail que será enviado:</label>
                       </div>
                     </div>
@@ -357,7 +357,7 @@ foreach ($lista_status as $status) {
                     ?>
                       <div class="row">
                         <div class="input-field col s12">
-                          <textarea name="templateAceite[]" id="emailAceite<?php echo $contador; ?>" class="materialize-textarea" style="display: none;" required></textarea>
+                          <textarea name="templateAceite[]" id="emailAceite<?php echo $contador; ?>" class="materialize-textarea" style="display: none;" ></textarea>
                           <label for="emailAceite<?php echo $contador; ?>">Caso tenha selecionado 'Email de aceite', por favor informe o texto que o colaborador irá visualizar na tela de aceite:</label>
                         </div>
                       </div>
@@ -368,16 +368,12 @@ foreach ($lista_status as $status) {
 
 
 
-
-
-
-
                     <br>
                     <label for="ArquivoProjeto">Insira os anexos do email, caso deseje. Os arquivos são opcionais.</label>
                     <div class="file-field input-field">
                       <div class="btn">
                         <span>Arquivo</span>
-                        <input type="file" id="ArquivoProjeto" name="ArquivoProjeto[]" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" multiple>
+                        <input type="file" id="ArquivoProjeto" name="ArquivoProjeto<?php echo $contador; ?>" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" multiple>
                       </div>
                       <div class="file-path-wrapper">
                         <input class="file-path validate" type="text">
@@ -399,9 +395,7 @@ foreach ($lista_status as $status) {
             ?>
 
 
-            <div class="row center">
-              <button type="submit" value="criar_servico" id="download-button" class="btn-large waves-effect waves-light orange">Criar novo serviço</button>
-            </div>
+            <button type="submit" name="criar_servico" id="download-button" class="btn-large waves-effect waves-light orange">Criar novo serviço</button>
 
 
           </form>
