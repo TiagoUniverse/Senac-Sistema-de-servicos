@@ -48,9 +48,7 @@ require_once "conexao.php";
 
 $quantidadeEmails = $_POST['quantidadeEmails'];
 $descricao = $_POST['Descricao'];
-// $tipo_email = $_POST['tipo_email'];
 
-var_dump($_POST['tipo_email3']);
 
 /*
 * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -75,6 +73,18 @@ require_once "../model/Template_Email_repositorio.php";
 use model\Template_Email_repositorio;
 
 $Template_Email_repositorio = new Template_Email_repositorio();
+
+/*
+* ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+* │  Email_destinatario'S SECTION                                                                                 │
+* └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+*/
+
+require_once "../model/Email_destinatario_repositorio.php";
+
+use model\Email_destinatario_repositorio;
+
+$Email_destinatario_repositorio = new Email_destinatario_repositorio();
 
 ?>
 
@@ -139,6 +149,21 @@ $Template_Email_repositorio = new Template_Email_repositorio();
         $nome_TipoEmail = 'tipo_email' . $contador;
 
         $Template_Email_repositorio->cadastro($descricao[$contador - 1], $contador , $_POST[$nome_TipoEmail], $Servico[0], $pdo);
+
+        // 4ª Consultar o Template de E-mail que acabou de ser criado
+        $Template_Email = $Template_Email_repositorio->consultar_templateCriado($descricao[$contador - 1], $Servico[0], $pdo);
+
+
+        // 5ª Cadastro dos e-mails destinatários de um respectivo template de e-mail        
+        $nome_EmailDestinatario = 'destinatario' . $contador;
+
+        foreach($_POST[$nome_EmailDestinatario] as $destinatario){
+          // echo $destinatario;
+          $Email_destinatario_repositorio->cadastro( $destinatario, $Template_Email[0], $pdo);
+        }
+
+       
+
       }
     }
   } else {

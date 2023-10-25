@@ -11,8 +11,8 @@
  * ║  │ a menos que seja obtida permissão prévia por escrito do SENAC PERNAMBUCO.                                   │  ║
  * ║  └─────────────────────────────────────────────────────────────────────────────────────────────────────────────┘  ║
  * ║  ┌─────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  ║
- * ║  │ @description: Repositorio da classe 'Template_Email'                                                        │  ║
- * ║  │ @class: Template_Email_repositorio                                                                          │  ║
+ * ║  │ @description: Repositorio da classe 'Email_destinatario'                                                    │  ║
+ * ║  │ @class: Email_destinatario_repositorio                                                                      │  ║
  * ║  │ @dir: Model                                                                                                 │  ║
  * ║  │ @author: Tiago César da Silva Lopes                                                                         │  ║
  * ║  │ @date: 25/10/23                                                                                             │  ║
@@ -31,7 +31,7 @@ namespace model;
 
 use PDOException;
 
-class Template_Email_repositorio
+class Email_destinatario_repositorio
 {
 
     /*
@@ -39,17 +39,15 @@ class Template_Email_repositorio
     * │  Função para cadastrar um novo Template de Email                                                              │
     * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
     */
-    function cadastro($descricao, $ordem_emails, $idStatus_TemplateEmail, $idServicos, $pdo)
+    function cadastro($email, $idTemplate_Email,  $pdo)
     {
         try {
-            $stmt = $pdo->prepare("Insert into Template_Email (descricao, ordem_emails, idStatus_TemplateEmail, idServicos)
-            Values (:descricao , :ordem_emails, :idStatus_TemplateEmail , :idServicos ) ");
+            $stmt = $pdo->prepare("Insert into Email_Destinatario (email, idTemplate_Email)
+            Values (:email, :idTemplate_Email) ");
 
             $stmt->execute(array(
-                ":descricao" => $descricao,
-                ":ordem_emails" => $ordem_emails,
-                ":idStatus_TemplateEmail" => $idStatus_TemplateEmail,
-                ":idServicos" => $idServicos
+                ":email" => $email,
+                ":idTemplate_Email" => $idTemplate_Email
             ));
 
             return true;
@@ -58,37 +56,7 @@ class Template_Email_repositorio
         }
     }
 
+   
 
-
-    /*
-    * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-    * │  Função para consultar um template de email que acabou de ser criado                                          │
-    * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-    */
-    function consultar_templateCriado($descricao, $idServicos, $pdo)
-    {
-        try {
-            $stmt = $pdo->prepare("Select * from Template_Email where status = 'ATIVO' and descricao = :descricao and idServicos = :idServicos  ");
-
-            $stmt->execute(array(
-                ":descricao" => $descricao,
-                ":idServicos" => $idServicos
-            ));
-
-            while ($linha = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-                $id = $linha['id'];
-                $descricao = $linha['descricao'];
-                $created = $linha['created'];
-                $updated = $linha['updated'];
-                $idStatus_TemplateEmail = $linha['idStatus_TemplateEmail'];
-                $idServico = $linha['idServico'];
-                $ordem_emails = $linha['ordem_emails'];
-
-                $Template_Email = array($id, $descricao, $created, $updated, $idStatus_TemplateEmail, $idServico, $ordem_emails);
-            }
-            return $Template_Email;
-        } catch (PDOException $err) {
-            echo $err->getMessage();
-        }
-    }
+    
 }
