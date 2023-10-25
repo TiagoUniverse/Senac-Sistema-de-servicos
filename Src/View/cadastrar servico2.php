@@ -273,8 +273,8 @@ foreach ($lista_status as $status) {
                   <div class="row">
                     <div class="row">
                       <div class="input-field col s12">
-                        <textarea id="Descricao" name="Descricao[]" class="materialize-textarea" required></textarea>
-                        <label for="Descricao">Descrição do e-mail que será enviado:</label>
+                        <textarea id="Descricao<?php echo $contador; ?>" name="Descricao[]" class="materialize-textarea" required></textarea>
+                        <label for="Descricao<?php echo $contador; ?>">Descrição do e-mail que será enviado:</label>
                       </div>
                     </div>
 
@@ -303,7 +303,7 @@ foreach ($lista_status as $status) {
 
                     if ($contador == $email_inicial) {
                     ?>
-                      <input type="text" name="tipo_email<?php echo $contador; ?>" value="<?php echo $id_emailAceite;  ?>">
+                      <input type="hidden" name="tipo_email<?php echo $contador; ?>" value="<?php echo $id_emailAceite;  ?>">
                       <div class="row">
                         <div class="input-field col s12">
                           <select id="tipoEmail<?php echo $contador; ?>" name="tipo_email[]" disabled>
@@ -316,7 +316,7 @@ foreach ($lista_status as $status) {
                     <?php
                     } else if ($contador == $email_final) {
                     ?>
-                      <input type="text" name="tipo_email<?php echo $contador; ?>" value="<?php echo $id_emailResultado;  ?>">
+                      <input type="hidden" name="tipo_email<?php echo $contador; ?>" value="<?php echo $id_emailResultado;  ?>">
                       <div class="row">
                         <div class="input-field col s12">
                           <select id="tipoEmail<?php echo $contador; ?>" name="tipo_email[]" disabled>

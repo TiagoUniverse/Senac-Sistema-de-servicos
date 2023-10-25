@@ -38,7 +38,7 @@ require_once "conexao.php";
 // echo "<br>";
 // var_dump($_POST['destinatario2']);
 // echo "<br>";
-// var_dump($_POST['tipo_email']);
+// var_dump($_POST['tipo_email1']);
 // echo "<br>";
 // var_dump($_POST['templateAceite']);
 // echo "<br>";
@@ -47,7 +47,8 @@ require_once "conexao.php";
 // var_dump($_POST['quantidadeEmails']);
 
 $quantidadeEmails = $_POST['quantidadeEmails'];
-
+$descricao = $_POST['Descricao'];
+// $tipo_email = $_POST['tipo_email'];
 
 /*
 * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -128,14 +129,15 @@ $Template_Email_repositorio = new Template_Email_repositorio();
       // if ($servico_existe == false) {
         
         // 1ª Cadastro do serviço
-        // $Servico_repositorio->cadastro($_SESSION['nomeServico'],  $_SESSION['descricaoServico'] , 1, $pdo);
+        $Servico_repositorio->cadastro($_SESSION['nomeServico'],  $_SESSION['descricaoServico'] , 1, $pdo);
 
-        // 2ª Cadastro do Template de Email
-        $Servico_repositorio->consul
+        // 2ª consulta do serviço criado
+        $Servico = $Servico_repositorio->consultar_byNome($_SESSION['nomeServico'], $pdo);
 
-        $nome = 'tipo_email' . $contador;
-        // echo $_POST[$nome];
-        $Template_Email_repositorio->cadastro()
+        // 3ª Cadastro do Template de Email
+        $nome_TipoEmail = 'tipo_email' . $contador;
+
+        $Template_Email_repositorio->cadastro( $descricao[$contador - 1], $_POST[$nome_TipoEmail] , $Servico[0], $pdo );
 
       }
 
