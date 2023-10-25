@@ -303,7 +303,7 @@ foreach ($lista_status as $status) {
 
                     if ($contador == $email_inicial) {
                     ?>
-                      <input type="hidden" name="tipo_email[]" value="<?php echo $id_emailAceite;  ?>">
+                      <input type="text" name="tipo_email<?php echo $contador; ?>" value="<?php echo $id_emailAceite;  ?>">
                       <div class="row">
                         <div class="input-field col s12">
                           <select id="tipoEmail<?php echo $contador; ?>" name="tipo_email[]" disabled>
@@ -316,7 +316,7 @@ foreach ($lista_status as $status) {
                     <?php
                     } else if ($contador == $email_final) {
                     ?>
-                      <input type="hidden" name="tipo_email[]" value="<?php echo $id_emailResultado;  ?>">
+                      <input type="text" name="tipo_email<?php echo $contador; ?>" value="<?php echo $id_emailResultado;  ?>">
                       <div class="row">
                         <div class="input-field col s12">
                           <select id="tipoEmail<?php echo $contador; ?>" name="tipo_email[]" disabled>
@@ -331,7 +331,7 @@ foreach ($lista_status as $status) {
                     ?>
                       <div class="row">
                         <div class="input-field col s12">
-                          <select id="tipoEmail<?php echo $contador; ?>" name="tipo_email[]">
+                          <select id="tipoEmail<?php echo $contador; ?>" name="tipo_email<?php echo $contador; ?>">
                             <option value="" disabled selected>Escolha uma opção</option>
                             <?php echo $opcoes_Status; ?>
                           </select>

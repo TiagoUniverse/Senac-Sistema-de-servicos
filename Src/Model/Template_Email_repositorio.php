@@ -11,11 +11,11 @@
  * ║  │ a menos que seja obtida permissão prévia por escrito do SENAC PERNAMBUCO.                                   │  ║
  * ║  └─────────────────────────────────────────────────────────────────────────────────────────────────────────────┘  ║
  * ║  ┌─────────────────────────────────────────────────────────────────────────────────────────────────────────────┐  ║
- * ║  │ @description: Repositorio da classe 'Servicos'                                                              │  ║
- * ║  │ @class: Servicos_repositorio                                                                                │  ║
+ * ║  │ @description: Repositorio da classe 'Template_Email'                                                        │  ║
+ * ║  │ @class: Template_Email_repositorio                                                                          │  ║
  * ║  │ @dir: Model                                                                                                 │  ║
  * ║  │ @author: Tiago César da Silva Lopes                                                                         │  ║
- * ║  │ @date: 18/10/23                                                                                             │  ║
+ * ║  │ @date: 25/10/23                                                                                             │  ║
  * ║  └─────────────────────────────────────────────────────────────────────────────────────────────────────────────┘  ║
  * ║═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════║
  * ║                                                     UPGRADES                                                      ║
@@ -31,54 +31,24 @@ namespace model;
 
 use PDOException;
 
-class Servicos_repositorio
+class Template_Email_repositorio
 {
 
     /*
     * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-    * │  Função para listar todos os serviços já criados                                                              │
+    * │  Função para cadastrar um novo Template de Email                                                              │
     * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
     */
-    function listar_Servicos($pdo)
+    function cadastro($descricao, $idStatus_TemplateEmail, $idServicos, $pdo)
     {
         try {
-            $stmt = $pdo->prepare("Select * from Servicos where status = 'ATIVO' ");
-
-            $stmt->execute();
-
-            $lista_Servicos = array();
-            while ($linha = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-                $id = $linha['id'];
-                $nome = $linha['nome'];
-                $descricao = $linha['descricao'];
-                $status = $linha['status'];
-                $created = $linha['created'];
-                $updated = $linha['updated'];
-                $idUsuario = $linha['idUsuario'];
-
-                $lista_Servicos[] = array($id, $nome, $descricao, $status, $created, $updated, $idUsuario);
-            
-            }
-            return $lista_Servicos;
-        } catch (PDOException $err) {
-            echo $err->getMessage();
-        }
-    }
-
-    /*
-    * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-    * │  Função para cadastrar um novo serviço                                                                        │
-    * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-    */
-    function cadastro($nome, $descricao, $idUsuario, $pdo)
-    {
-        try {
-            $stmt = $pdo->prepare("Insert into Servicos (nome, descricao, idUsuario) VALUES (:nome, :descricao, :idUsuario) ");
+            $stmt = $pdo->prepare("Insert into Template_Email (descricao, idStatus_TemplateEmail, idServicos)
+            Values (:descricao , :idStatus_TemplateEmail , :idServicos ) ");
 
             $stmt->execute(array(
-                ":nome" => $nome,
                 ":descricao" => $descricao,
-                ":idUsuario" => $idUsuario
+                ":idStatus_TemplateEmail" => $idStatus_TemplateEmail,
+                ":idServicos" => $idServicos
             ));
 
             return true;
@@ -87,59 +57,7 @@ class Servicos_repositorio
         }
     }
 
-
-    /*
-    * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-    * │  Função para verificar se um serviço já existe                                                                │
-    * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-    */
-    function servico_existe($nome, $pdo)
-    {
-        try {
-            $stmt = $pdo->prepare("Select * from Servicos where nome = :nome and status = 'ATIVO'  ");
-
-            $stmt->execute(array(
-                ":nome" => $nome
-            ));
-
-            while ($linha = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-               return true;
-            }
-            return false;
-        } catch (PDOException $err) {
-            echo $err->getMessage();
-        }
-    }
-
-    /*
-    * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-    * │  Função para consultar um serviço pelo nome                                                                   │
-    * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-    */
-    function consultar_byNome($nome, $pdo)
-    {
-        try {
-            $stmt = $pdo->prepare("Select * from Servicos where nome = :nome and status = 'ATIVO'  ");
-
-            $stmt->execute(array(
-                ":nome" => $nome
-            ));
-
-            while ($linha = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-               $idServico = $linha['id'];
-               $nome = $linha['nome'];
-               $descricao = $linha['descricao'];
-               $created = $linha['created'];
-               $updated = $linha['updated'];
-               $idUsuario = $linha['idUsuario'];
-
-               $Servico = array($idServico, $nome, $descricao, $created, $updated, $idUsuario);
-            }
-            return $Servico;
-        } catch (PDOException $err) {
-            echo $err->getMessage();
-        }
-    }
+   
 
     
 }

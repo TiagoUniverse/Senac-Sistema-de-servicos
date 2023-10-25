@@ -397,6 +397,30 @@ from
 	 Insert INTO [StatusTimeline_CodigoEtica] (descricao) Values
 	 ('');
 
+
+/**	=================================================================================================================== **/
+
+ /**
+     * ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+     * ║ 12-                                             Template_TelaAceite                                           ║
+     * ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+     *
+     * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+     * │ @description: Template for an screen of acceptance										                       │
+     * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+     */
+    CREATE TABLE [Template_TelaAceite] (
+        [id]					INT IDENTITY(1,1)  NOT NULL PRIMARY KEY,
+		[descricao]				VARCHAR(MAX)	   NOT NULL DEFAULT '',
+		[status]				VARCHAR(300)	   NOT NULL DEFAULT 'ATIVO',
+		[created]				DATETIME          NOT NULL DEFAULT GETDATE(),
+        [updated]				DATETIME              NULL,
+
+		[idTemplate_Email]			INT NOT NULL,
+
+		FOREIGN KEY ([idTemplate_Email]) REFERENCES Template_Email([id])
+
+    );
  /**	=================================================================================================================== **/
 
  /**

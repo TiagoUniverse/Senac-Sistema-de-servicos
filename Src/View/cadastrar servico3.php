@@ -48,6 +48,7 @@ require_once "conexao.php";
 
 $quantidadeEmails = $_POST['quantidadeEmails'];
 
+
 /*
 * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 * │  Servicos'S SECTION                                                                                           │
@@ -60,27 +61,17 @@ use model\Servicos_repositorio;
 
 $Servico_repositorio = new Servicos_repositorio();
 
+/*
+* ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+* │  Template_Email'S SECTION                                                                                     │
+* └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+*/
 
-if (
-  isset($_POST['Descricao'])
-  && isset($_POST['destinatario1'])
-  && isset($_POST['tipo_email'])
-  && isset($_POST['templateAceite'])
-  && isset($_FILES['ArquivoProjeto1'])
-  && isset($_POST['quantidadeEmails'])
-) {
-  $possui_info = true;
+require_once "../model/Template_Email_repositorio.php";
 
-  for ($contador = 1; $contador <= $quantidadeEmails; $contador++) {
-    echo "rodei";
-  }
-} else {
-  $possui_info = false;
-}
+use model\Template_Email_repositorio;
 
-
-
-
+$Template_Email_repositorio = new Template_Email_repositorio();
 
 ?>
 
@@ -114,38 +105,44 @@ if (
   <?php
   /*
   * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-  * │  Cadastro'S SECTION                                                                                           │
+  * │  Validações do cadastro                                                                                       │
   * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
   */
-  if (isset($_POST['status_cadastro']) && $_POST['status_cadastro'] == "CADASTRANDO UM NOVO SERVIÇO") {
+  if (
+    isset($_POST['Descricao'])
+    && isset($_POST['destinatario1'])
+    && isset($_POST['tipo_email1'])
+    && isset($_POST['templateAceite'])
+    && isset($_FILES['ArquivoProjeto1'])
+    && isset($_POST['quantidadeEmails'])
+  ) {
+    $possui_info = true;
 
 
+    for ($contador = 1; $contador <= $quantidadeEmails; $contador++) {
 
 
-    $servico_existe = $Servico_repositorio->servico_existe($_POST['nome'], $pdo);
+      $servico_existe = $Servico_repositorio->servico_existe($_SESSION['nomeServico'], $pdo);
 
 
-    if ($servico_existe == false) {
-      $Servico_repositorio->cadastro($_POST['nome'], $_POST['descricao'], 1, $pdo);
+      // if ($servico_existe == false) {
+        
+        // 1ª Cadastro do serviço
+        // $Servico_repositorio->cadastro($_SESSION['nomeServico'],  $_SESSION['descricaoServico'] , 1, $pdo);
 
+        // 2ª Cadastro do Template de Email
+        $Servico_repositorio->consul
 
-  ?>
-      <script>
-        M.toast({
-          html: 'Cadastro de um serviço com sucesso!'
-        });
-      </script>
-    <?php
-    } else {
-    ?>
-      <script>
-        M.toast({
-          html: 'Este serviço já foi cadastrado!'
-        });
-      </script>
-  <?php
-    }
+        $nome = 'tipo_email' . $contador;
+        // echo $_POST[$nome];
+        $Template_Email_repositorio->cadastro()
+
+      }
+
+  } else {
+    $possui_info = false;
   }
+
 
 
   ?>
