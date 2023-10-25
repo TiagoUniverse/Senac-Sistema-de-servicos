@@ -320,6 +320,7 @@ from
     CREATE TABLE [Template_Email] (
         [id]					INT IDENTITY(1,1)  NOT NULL PRIMARY KEY,
 		[descricao]				VARCHAR(MAX)	   NOT NULL DEFAULT '',
+		[ordem_emails]			VARCHAR(300)	   NOT NULL DEFAULT '',
 		[status]				VARCHAR(300)	   NOT NULL DEFAULT 'ATIVO',
 		[created]				DATETIME          NOT NULL DEFAULT GETDATE(),
         [updated]				DATETIME              NULL,

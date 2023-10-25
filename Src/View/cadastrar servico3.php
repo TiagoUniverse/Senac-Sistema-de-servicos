@@ -119,17 +119,16 @@ $Template_Email_repositorio = new Template_Email_repositorio();
   ) {
     $possui_info = true;
 
-
-    for ($contador = 1; $contador <= $quantidadeEmails; $contador++) {
-
-
-      $servico_existe = $Servico_repositorio->servico_existe($_SESSION['nomeServico'], $pdo);
+    $servico_existe = $Servico_repositorio->servico_existe($_SESSION['nomeServico'], $pdo);
 
 
-      // if ($servico_existe == false) {
-        
-        // 1ª Cadastro do serviço
-        $Servico_repositorio->cadastro($_SESSION['nomeServico'],  $_SESSION['descricaoServico'] , 1, $pdo);
+    if ($servico_existe == false) {
+
+      // 1ª Cadastro do serviço
+      $Servico_repositorio->cadastro($_SESSION['nomeServico'],  $_SESSION['descricaoServico'], 1, $pdo);
+
+      // Cadastro das informações do serviço:
+      for ($contador = 1; $contador <= $quantidadeEmails; $contador++) {
 
         // 2ª consulta do serviço criado
         $Servico = $Servico_repositorio->consultar_byNome($_SESSION['nomeServico'], $pdo);
@@ -137,10 +136,9 @@ $Template_Email_repositorio = new Template_Email_repositorio();
         // 3ª Cadastro do Template de Email
         $nome_TipoEmail = 'tipo_email' . $contador;
 
-        $Template_Email_repositorio->cadastro( $descricao[$contador - 1], $_POST[$nome_TipoEmail] , $Servico[0], $pdo );
-
+        $Template_Email_repositorio->cadastro($descricao[$contador - 1], $_POST[$nome_TipoEmail], $Servico[0], $pdo);
       }
-
+    }
   } else {
     $possui_info = false;
   }
