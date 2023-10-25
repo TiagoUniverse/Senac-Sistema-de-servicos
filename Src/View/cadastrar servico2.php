@@ -274,14 +274,14 @@ foreach ($lista_status as $status) {
                     <div class="row">
                       <div class="input-field col s12">
                         <textarea id="Descricao<?php echo $contador; ?>" name="Descricao[]" class="materialize-textarea" required></textarea>
-                        <label for="Descricao<?php echo $contador; ?>">Descrição do e-mail que será enviado:</label>
+                        <label  for="Descricao<?php echo $contador; ?>">Descrição do e-mail que será enviado:</label>
                       </div>
                     </div>
 
 
                     <!-- Email destinatario -->
                     <div class="row">
-                      <label class="left">E-mails destinatários:</label>
+                      <label class="left" style="margin-left: 11px;">E-mails destinatários:</label>
                       <div class="input-field col s12">
 
 
