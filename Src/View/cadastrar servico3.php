@@ -32,17 +32,21 @@ require_once "conexao.php";
 
 
 // Variáveis
-var_dump($_POST['Descricao']);
-echo "<br>";
-var_dump($_POST['destinatario']);
-echo "<br>";
-var_dump($_POST['tipo_email']);
-echo "<br>";
-var_dump($_POST['templateAceite']);
-echo "<br>";
-var_dump($_FILES['ArquivoProjeto2']);
-echo "<br>";
-var_dump($_POST['quantidadeEmails']);
+// var_dump($_POST['Descricao']);
+// echo "<br>";
+// var_dump($_POST['destinatario1']);
+// echo "<br>";
+// var_dump($_POST['destinatario2']);
+// echo "<br>";
+// var_dump($_POST['tipo_email']);
+// echo "<br>";
+// var_dump($_POST['templateAceite']);
+// echo "<br>";
+// var_dump($_FILES['ArquivoProjeto1']);
+// echo "<br>";
+// var_dump($_POST['quantidadeEmails']);
+
+$quantidadeEmails = $_POST['quantidadeEmails'];
 
 /*
 * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -55,6 +59,28 @@ require_once "../model/Servicos_repositorio.php";
 use model\Servicos_repositorio;
 
 $Servico_repositorio = new Servicos_repositorio();
+
+
+if (
+  isset($_POST['Descricao'])
+  && isset($_POST['destinatario1'])
+  && isset($_POST['tipo_email'])
+  && isset($_POST['templateAceite'])
+  && isset($_FILES['ArquivoProjeto1'])
+  && isset($_POST['quantidadeEmails'])
+) {
+  $possui_info = true;
+
+  for ($contador = 1; $contador <= $quantidadeEmails; $contador++) {
+    echo "rodei";
+  }
+} else {
+  $possui_info = false;
+}
+
+
+
+
 
 ?>
 

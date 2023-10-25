@@ -286,7 +286,7 @@ foreach ($lista_status as $status) {
 
 
                         <div class="destinatario-container">
-                          <input type="email" name="destinatario[]" required>
+                          <input type="email" name="destinatario<?php echo $contador; ?>[]" required>
                         </div>
                         <button class="btn" type="button" id="<?php echo $adicionarDestinatarioID; ?>">Adicionar Destinatário</button>
                         <button class="btn" type="button" id="<?php echo $removerDestinatarioID; ?>">Remover Destinatário</button>
@@ -373,7 +373,7 @@ foreach ($lista_status as $status) {
                     <div class="file-field input-field">
                       <div class="btn">
                         <span>Arquivo</span>
-                        <input type="file" id="ArquivoProjeto" name="ArquivoProjeto<?php echo $contador; ?>" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" multiple>
+                        <input type="file" id="ArquivoProjeto" name="ArquivoProjeto<?php echo $contador; ?>[]" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" multiple>
                       </div>
                       <div class="file-path-wrapper">
                         <input class="file-path validate" type="text">
@@ -521,7 +521,7 @@ foreach ($lista_status as $status) {
         adicionarDestinatarioButton<?php echo $contador; ?>.addEventListener("click", function() {
           const novoCampoDestinatario = document.createElement("input");
           novoCampoDestinatario.type = "email";
-          novoCampoDestinatario.name = "destinatario[]";
+          novoCampoDestinatario.name = "destinatario<?php echo $contador; ?>[]";
           novoCampoDestinatario.required = true;
           const destinatarioContainer = adicionarDestinatarioButton<?php echo $contador; ?>.parentNode.querySelector(".destinatario-container");
           destinatarioContainer.appendChild(novoCampoDestinatario);
