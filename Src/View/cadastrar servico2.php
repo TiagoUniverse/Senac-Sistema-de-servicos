@@ -285,14 +285,38 @@ foreach ($lista_status as $status) {
                       <div class="input-field col s12">
 
 
-                        <div class="destinatario-container">
-                          <input type="email" name="destinatario<?php echo $contador; ?>[]" required>
-                        </div>
-                        <button class="btn" type="button" id="<?php echo $adicionarDestinatarioID; ?>">Adicionar Destinatário</button>
-                        <button class="btn" type="button" id="<?php echo $removerDestinatarioID; ?>">Remover Destinatário</button>
+                        <?php
+                        // Email destinatario para o primeiro email
+                        if ($contador != 1) {
+                        ?>
+
+                          <div class="destinatario-container">
+                            <input type="email" name="destinatario<?php echo $contador; ?>[]" required>
+                          </div>
+                          <button class="btn" type="button" id="<?php echo $adicionarDestinatarioID; ?>">Adicionar Destinatário</button>
+                          <button class="btn" type="button" id="<?php echo $removerDestinatarioID; ?>">Remover Destinatário</button>
+
+                        <?php
+                        } else {
+                        ?>
+                          <!-- O primeiro e-mail é enviado para o e-mail que o colaborador tem cadastrado. Dessa forma, irei cadastrar 'emailDoColaborador@gmail.com' inicialmente
+                        para que posteriormente seja alterado pelo e-mail correto do colaborador-->
+                          <input type="hidden" name="destinatario<?php echo $contador; ?>[]" value="emailDoColaborador@gmail.com">
+                          <div class="destinatario-container">
+                            <input type="text" value="O primeiro e-mail de aceite será enviado automaticamente para o e-mail do colaborador" disabled>
+                          </div>
+
+                        <?php
+                        }
+                        ?>
+
+
+
+
+
+
                       </div>
                     </div>
-
 
 
 
@@ -357,7 +381,7 @@ foreach ($lista_status as $status) {
                     ?>
                       <div class="row">
                         <div class="input-field col s12">
-                          <textarea name="templateAceite[]" id="emailAceite<?php echo $contador; ?>" class="materialize-textarea" style="display: none;" ></textarea>
+                          <textarea name="templateAceite[]" id="emailAceite<?php echo $contador; ?>" class="materialize-textarea" style="display: none;"></textarea>
                           <label for="emailAceite<?php echo $contador; ?>">Caso tenha selecionado 'Email de aceite', por favor informe o texto que o colaborador irá visualizar na tela de aceite:</label>
                         </div>
                       </div>
@@ -511,35 +535,32 @@ foreach ($lista_status as $status) {
     document.addEventListener("DOMContentLoaded", function() {
       <?php
       for ($contador = 1; $contador <= $quantidadeEmails; $contador++) {
-        $adicionarDestinatarioID = "adicionarDestinatario" . $contador;
-        $removerDestinatarioID = "removerDestinatario" . $contador;
       ?>
-        const adicionarDestinatarioButton<?php echo $contador; ?> = document.getElementById("<?php echo $adicionarDestinatarioID; ?>");
-        const removerDestinatarioButton<?php echo $contador; ?> = document.getElementById("<?php echo $removerDestinatarioID; ?>");
+        const adicionarDestinatarioButton<?php echo $contador; ?> = document.getElementById("adicionarDestinatario<?php echo $contador; ?>");
+        const removerDestinatarioButton<?php echo $contador; ?> = document.getElementById("removerDestinatario<?php echo $contador; ?>");
 
+        if (adicionarDestinatarioButton<?php echo $contador; ?> && removerDestinatarioButton<?php echo $contador; ?>) {
+          adicionarDestinatarioButton<?php echo $contador; ?>.addEventListener("click", function() {
+            const novoCampoDestinatario = document.createElement("input");
+            novoCampoDestinatario.type = "email";
+            novoCampoDestinatario.name = "destinatario[]";
+            novoCampoDestinatario.required = true;
+            const destinatarioContainer = this.parentNode.querySelector(".destinatario-container");
+            destinatarioContainer.appendChild(novoCampoDestinatario);
+          });
 
-        adicionarDestinatarioButton<?php echo $contador; ?>.addEventListener("click", function() {
-          const novoCampoDestinatario = document.createElement("input");
-          novoCampoDestinatario.type = "email";
-          novoCampoDestinatario.name = "destinatario<?php echo $contador; ?>[]";
-          novoCampoDestinatario.required = true;
-          const destinatarioContainer = adicionarDestinatarioButton<?php echo $contador; ?>.parentNode.querySelector(".destinatario-container");
-          destinatarioContainer.appendChild(novoCampoDestinatario);
-        });
-
-
-        removerDestinatarioButton<?php echo $contador; ?>.addEventListener("click", function() {
-          const camposDestinatario = removerDestinatarioButton<?php echo $contador; ?>.parentNode.querySelector(".destinatario-container").querySelectorAll("input[type=email]");
-          if (camposDestinatario.length > 1) {
-            camposDestinatario[camposDestinatario.length - 1].remove();
-          }
-        });
+          removerDestinatarioButton<?php echo $contador; ?>.addEventListener("click", function() {
+            const camposDestinatario = this.parentNode.querySelector(".destinatario-container").querySelectorAll("input[type=email]");
+            if (camposDestinatario.length > 1) {
+              camposDestinatario[camposDestinatario.length - 1].remove();
+            }
+          });
+        }
       <?php
       }
       ?>
     });
   </script>
-
 
 
 
