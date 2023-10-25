@@ -86,6 +86,18 @@ use model\Email_destinatario_repositorio;
 
 $Email_destinatario_repositorio = new Email_destinatario_repositorio();
 
+/*
+* ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+* │  Template_TelaAceite'S SECTION                                                                                │
+* └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+*/
+
+require_once "../model/Template_TelaAceite_repositorio.php";
+
+use model\Template_TelaAceite_repositorio;
+
+$Template_TelaAceite_repositorio = new Template_TelaAceite_repositorio();
+
 ?>
 
 
@@ -139,11 +151,11 @@ $Email_destinatario_repositorio = new Email_destinatario_repositorio();
       // 1ª Cadastro do serviço
       $Servico_repositorio->cadastro($_SESSION['nomeServico'],  $_SESSION['descricaoServico'], 1, $pdo);
 
-      // Cadastro das informações do serviço:
-      for ($contador = 1; $contador <= $quantidadeEmails; $contador++) {
+      // 2ª consulta do serviço criado
+      $Servico = $Servico_repositorio->consultar_byNome($_SESSION['nomeServico'], $pdo);
 
-        // 2ª consulta do serviço criado
-        $Servico = $Servico_repositorio->consultar_byNome($_SESSION['nomeServico'], $pdo);
+      // Cadastro das informações de email do serviço:
+      for ($contador = 1; $contador <= $quantidadeEmails; $contador++) {
 
         // 3ª Cadastro do Template de Email
         $nome_TipoEmail = 'tipo_email' . $contador;
@@ -158,8 +170,13 @@ $Email_destinatario_repositorio = new Email_destinatario_repositorio();
         $nome_EmailDestinatario = 'destinatario' . $contador;
 
         foreach($_POST[$nome_EmailDestinatario] as $destinatario){
-          // echo $destinatario;
           $Email_destinatario_repositorio->cadastro( $destinatario, $Template_Email[0], $pdo);
+        }
+
+
+        // 6ª Cadastro do Template de Tela de Aceite, caso necessário
+        if ($_POST[$nome_TipoEmail] == 1){
+          $Template_TelaAceite_repositorio->cadastro($_POST['Descricao'][$contador - 1] , $Template_Email[0], $pdo);
         }
 
        
