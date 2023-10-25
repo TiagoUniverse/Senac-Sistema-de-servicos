@@ -50,6 +50,8 @@ $quantidadeEmails = $_POST['quantidadeEmails'];
 $descricao = $_POST['Descricao'];
 // $tipo_email = $_POST['tipo_email'];
 
+var_dump($_POST['tipo_email3']);
+
 /*
 * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 * │  Servicos'S SECTION                                                                                           │
@@ -136,7 +138,7 @@ $Template_Email_repositorio = new Template_Email_repositorio();
         // 3ª Cadastro do Template de Email
         $nome_TipoEmail = 'tipo_email' . $contador;
 
-        $Template_Email_repositorio->cadastro($descricao[$contador - 1], $_POST[$nome_TipoEmail], $Servico[0], $pdo);
+        $Template_Email_repositorio->cadastro($descricao[$contador - 1], $contador , $_POST[$nome_TipoEmail], $Servico[0], $pdo);
       }
     }
   } else {

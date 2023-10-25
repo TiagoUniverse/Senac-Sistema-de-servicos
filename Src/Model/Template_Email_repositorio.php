@@ -39,14 +39,15 @@ class Template_Email_repositorio
     * │  Função para cadastrar um novo Template de Email                                                              │
     * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
     */
-    function cadastro($descricao, $idStatus_TemplateEmail, $idServicos, $pdo)
+    function cadastro($descricao, $ordem_emails, $idStatus_TemplateEmail, $idServicos, $pdo)
     {
         try {
-            $stmt = $pdo->prepare("Insert into Template_Email (descricao, idStatus_TemplateEmail, idServicos)
-            Values (:descricao , :idStatus_TemplateEmail , :idServicos ) ");
+            $stmt = $pdo->prepare("Insert into Template_Email (descricao, ordem_emails, idStatus_TemplateEmail, idServicos)
+            Values (:descricao , :ordem_emails, :idStatus_TemplateEmail , :idServicos ) ");
 
             $stmt->execute(array(
                 ":descricao" => $descricao,
+                ":ordem_emails" => $ordem_emails,
                 ":idStatus_TemplateEmail" => $idStatus_TemplateEmail,
                 ":idServicos" => $idServicos
             ));
