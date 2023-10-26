@@ -79,3 +79,16 @@
   justify-content: center;
   align-items: center;
 }
+
+/* box-resultado */
+.box-resultado{
+  border-style: dotted;
+}
+
+.fundo_vermelho{
+  background-color: rgb(235, 182, 161);
+}
+
+.fundo_verde{
+  background-color: rgb(176, 224, 176);
+}

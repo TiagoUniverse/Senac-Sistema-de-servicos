@@ -145,6 +145,7 @@ $Anexo_repositorio = new Anexo_repositorio();
   * │  Validações do cadastro                                                                                       │
   * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
   */
+  $fundo_vermelho = true;
   if (
     isset($_POST['Descricao'])
     && isset($_POST['destinatario1'])
@@ -229,9 +230,39 @@ $Anexo_repositorio = new Anexo_repositorio();
           }
         }
       }
+      $mensagem_resultado = "Cadastro de um serviço com sucesso!";
+      $fundo_vermelho = false;
+      ?>
+    <script>
+        M.toast({
+          html: $mensagem_resultado
+        });
+      </script>
+    <?php
+    } else {
+      $mensagem_resultado = "Este serviço já existe. Por favor, tente cadastrar outro serviço.";
+      ?>
+    <script>
+        M.toast({
+          html: $mensagem_resultado
+        });
+      </script>
+    <?php
     }
+
+    
+   
   } else {
     $possui_info = false;
+
+    $mensagem_resultado = "Erro no cadastro do serviço. Por favor, tente novamente.";
+    ?>
+    <script>
+        M.toast({
+          html: 'Erro no cadastro do serviço. Por favor, tente novamente.'
+        });
+      </script>
+    <?php
   }
 
 
@@ -253,11 +284,29 @@ $Anexo_repositorio = new Anexo_repositorio();
       <a href="cadastrar servico.php">Voltar</a>
       <h1 class="header center black-text">Cadastro de Serviços</h1>
       <div class="row center">
-        <h5 class="header col s12 light">Cadastre o serviço no formulário abaixo. </h5>
+        <h5 class="header col s12 light">Resultado do cadastro. </h5>
       </div>
 
 
+      <br><br>
+      <?php
+        if ($fundo_vermelho){
+          ?>
+            <div class="container box-resultado fundo_vermelho">
+          <?php
+        } else {
+          ?>
+          <div class="container box-resultado fundo_verde">
+          <?php
+        }
+      ?>
+      
+      
 
+
+
+        <?php echo "<h4>" . $mensagem_resultado . "</h4>"; ?>
+      </div>
 
 
 
