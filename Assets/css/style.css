@@ -9,11 +9,12 @@
 .icon-block {
   padding: 0 15px;
 }
+
 .icon-block .material-icons {
-	font-size: inherit;
+  font-size: inherit;
 }
 
-.page-footer{
+.page-footer {
   /* position: fixed; */
   width: 100%;
   /* left: 0; */
@@ -26,16 +27,16 @@
 
 /* SIDEBAR */
 
-.wrapper{
+.wrapper {
   display: flex;
 }
 
-.divPrincipal{
+.divPrincipal {
   /* background-color: rgb(196, 87, 87); */
   flex: 0.9;
 }
 
-.sideBar{
+.sideBar {
   background-color: #086ceee5;
   text-align: center;
   color: white;
@@ -44,11 +45,11 @@
   box-shadow: 0 0 3px black;
 }
 
-.sideBar-li{
+.sideBar-li {
   margin-bottom: 10px;
 }
 
-.sideBar ul li a{
+.sideBar ul li a {
   color: white;
   margin-bottom: 50px;
   /* background-color: red; */
@@ -59,7 +60,7 @@
 
 /* imagem quantidade emails */
 
-.img-emails{
+.img-emails {
   width: 400px;
   height: 100%;
   display: flex;
@@ -67,4 +68,14 @@
   align-items: center;
   margin: 0 auto;
   pointer-events: none;
+}
+
+
+/* Botao-email */
+
+.botao-email {
+  margin: 1cm auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

@@ -42,7 +42,7 @@ require_once "conexao.php";
 // echo "<br>";
 // var_dump($_POST['templateAceite']);
 // echo "<br>";
-// var_dump($_FILES['ArquivoProjeto1']);
+// var_dump($_FILES['ArquivoProjeto2']);
 // echo "<br>";
 // var_dump($_POST['quantidadeEmails']);
 
@@ -97,6 +97,18 @@ require_once "../model/Template_TelaAceite_repositorio.php";
 use model\Template_TelaAceite_repositorio;
 
 $Template_TelaAceite_repositorio = new Template_TelaAceite_repositorio();
+
+/*
+* ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+* │  Anexo'S SECTION                                                                                              │
+* └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+*/
+
+require_once "../model/Anexo_repositorio.php";
+
+use model\Anexo_repositorio;
+
+$Anexo_repositorio = new Anexo_repositorio();
 
 ?>
 
@@ -160,7 +172,7 @@ $Template_TelaAceite_repositorio = new Template_TelaAceite_repositorio();
         // 3ª Cadastro do Template de Email
         $nome_TipoEmail = 'tipo_email' . $contador;
 
-        $Template_Email_repositorio->cadastro($descricao[$contador - 1], $contador , $_POST[$nome_TipoEmail], $Servico[0], $pdo);
+        $Template_Email_repositorio->cadastro($descricao[$contador - 1], $contador, $_POST[$nome_TipoEmail], $Servico[0], $pdo);
 
         // 4ª Consultar o Template de E-mail que acabou de ser criado
         $Template_Email = $Template_Email_repositorio->consultar_templateCriado($descricao[$contador - 1], $Servico[0], $pdo);
@@ -169,18 +181,53 @@ $Template_TelaAceite_repositorio = new Template_TelaAceite_repositorio();
         // 5ª Cadastro dos e-mails destinatários de um respectivo template de e-mail        
         $nome_EmailDestinatario = 'destinatario' . $contador;
 
-        foreach($_POST[$nome_EmailDestinatario] as $destinatario){
-          $Email_destinatario_repositorio->cadastro( $destinatario, $Template_Email[0], $pdo);
+        foreach ($_POST[$nome_EmailDestinatario] as $destinatario) {
+          $Email_destinatario_repositorio->cadastro($destinatario, $Template_Email[0], $pdo);
         }
 
 
         // 6ª Cadastro do Template de Tela de Aceite, caso necessário
-        if ($_POST[$nome_TipoEmail] == 1){
-          $Template_TelaAceite_repositorio->cadastro($_POST['Descricao'][$contador - 1] , $Template_Email[0], $pdo);
+        if ($_POST[$nome_TipoEmail] == 1) {
+          $Template_TelaAceite_repositorio->cadastro($_POST['Descricao'][$contador - 1], $Template_Email[0], $pdo);
         }
 
-       
+        // 7ª Cadastro dos Anexos de um Template de E-mail
+        /**
+         * ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+         * ║                                         Anexo                                                                 ║
+         * ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+         */
 
+
+        $nomeArquivo = "ArquivoProjeto" . $contador;
+        $Arquivo_temporario = $_FILES[$nomeArquivo];
+
+
+        foreach ($Arquivo_temporario['name'] as $indice => $nome) {
+          $nome_temporario = $Arquivo_temporario['tmp_name'][$indice];
+          $tipo = $Arquivo_temporario['type'][$indice];
+
+          // Verificação se o arquivo é válido
+          if ($nome_temporario != "" && is_uploaded_file($nome_temporario)) {
+            // Nome original do arquivo
+            $nome_original = $nome;
+
+            // Um nome único para o arquivo
+            $novoNome = time() . '.' . $nome;
+
+            // Diretório do arquivo
+            $diretorio = 'Docs/';
+
+            // Caminho completo do arquivo
+            $caminhoCompleto = $diretorio . $novoNome;
+
+            // Movendo o arquivo para o diretório de destino
+            if (move_uploaded_file($nome_temporario, $caminhoCompleto)) {
+              // Salvando no banco de dados
+              $Anexo_repositorio->cadastro($nome_original, $novoNome, $tipo, $caminhoCompleto, $Template_Email[0], $pdo);
+            }
+          }
+        }
       }
     }
   } else {

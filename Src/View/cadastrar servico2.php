@@ -419,7 +419,7 @@ foreach ($lista_status as $status) {
             ?>
 
 
-            <button type="submit" name="criar_servico" id="download-button" class="btn-large waves-effect waves-light orange">Criar novo serviço</button>
+            <button  type="submit" name="criar_servico" id="download-button" class="botao-email btn-large waves-effect waves-light orange">Criar novo serviço</button>
 
 
           </form>
