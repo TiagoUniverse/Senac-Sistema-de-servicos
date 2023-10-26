@@ -273,15 +273,15 @@ foreach ($lista_status as $status) {
                   <div class="row">
                     <div class="row">
                       <div class="input-field col s12">
-                        <textarea id="Descricao<?php echo $contador; ?>" name="Descricao[]" class="materialize-textarea" required></textarea>
-                        <label  for="Descricao<?php echo $contador; ?>">Descrição do e-mail que será enviado:</label>
+                        <textarea style="color: rgb(7,7,7);" id="Descricao<?php echo $contador; ?>" name="Descricao[]" class="materialize-textarea" required></textarea>
+                        <label  style="color: rgb(7,7,7);" for="Descricao<?php echo $contador; ?>">Descrição do e-mail que será enviado:</label>
                       </div>
                     </div>
 
 
                     <!-- Email destinatario -->
                     <div class="row">
-                      <label class="left" style="margin-left: 11px;">E-mails destinatários:</label>
+                      <label class="left" style="color: rgb(7,7,7);"  style="margin-left: 11px;">E-mails destinatários:</label>
                       <div class="input-field col s12">
 
 
@@ -372,8 +372,8 @@ foreach ($lista_status as $status) {
 
                       <div class="row">
                         <div class="input-field col s12">
-                          <textarea name="templateAceite[]" id="emailAceite<?php echo $contador; ?>" class="materialize-textarea" required></textarea>
-                          <label for="emailAceite<?php echo $contador; ?>">Caso tenha selecionado 'Email de aceite', por favor informe o texto que o colaborador irá visualizar na tela de aceite:</label>
+                          <textarea style="color: rgb(7,7,7);" name="templateAceite[]" id="emailAceite<?php echo $contador; ?>" class="materialize-textarea" required></textarea>
+                          <label style="color: rgb(7,7,7);" for="emailAceite<?php echo $contador; ?>">Caso tenha selecionado 'Email de aceite', por favor informe o texto que o colaborador irá visualizar na tela de aceite:</label>
                         </div>
                       </div>
                     <?php
@@ -381,8 +381,8 @@ foreach ($lista_status as $status) {
                     ?>
                       <div class="row">
                         <div class="input-field col s12">
-                          <textarea name="templateAceite[]" id="emailAceite<?php echo $contador; ?>" class="materialize-textarea" style="display: none;"></textarea>
-                          <label for="emailAceite<?php echo $contador; ?>">Caso tenha selecionado 'Email de aceite', por favor informe o texto que o colaborador irá visualizar na tela de aceite:</label>
+                          <textarea style="color: rgb(7,7,7); display: none;" name="templateAceite[]" id="emailAceite<?php echo $contador; ?>" class="materialize-textarea"></textarea>
+                          <label style="color: rgb(7,7,7);" for="emailAceite<?php echo $contador; ?>">Caso tenha selecionado 'Email de aceite', por favor informe o texto que o colaborador irá visualizar na tela de aceite:</label>
                         </div>
                       </div>
                     <?php
@@ -393,7 +393,7 @@ foreach ($lista_status as $status) {
 
 
                     <br>
-                    <label for="ArquivoProjeto">Insira os anexos do email, caso deseje. Os arquivos são opcionais.</label>
+                    <label style="color: rgb(7,7,7); " for="ArquivoProjeto">Insira os anexos do email, caso deseje. Os arquivos são opcionais.</label>
                     <div class="file-field input-field">
                       <div class="btn">
                         <span>Arquivo</span>
