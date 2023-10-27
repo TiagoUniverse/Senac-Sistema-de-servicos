@@ -125,6 +125,7 @@ class Servicos_repositorio
                 ":nome" => $nome
             ));
 
+
             while ($linha = $stmt->fetch(\PDO::FETCH_ASSOC)) {
                $idServico = $linha['id'];
                $nome = $linha['nome'];
@@ -134,8 +135,9 @@ class Servicos_repositorio
                $idUsuario = $linha['idUsuario'];
 
                $Servico = array($idServico, $nome, $descricao, $created, $updated, $idUsuario);
+               return $Servico;
             }
-            return $Servico;
+           
         } catch (PDOException $err) {
             echo $err->getMessage();
         }

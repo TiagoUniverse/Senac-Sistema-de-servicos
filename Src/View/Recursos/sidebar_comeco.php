@@ -1,21 +1,48 @@
+<?php
+/*
+* ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+* │  Servico'S SECTION                                                                                            │
+* └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+*/
+
+require_once "../model/Servicos_repositorio.php";
+
+use model\Servicos_repositorio;
+
+$Servicos_repositorio = new Servicos_repositorio();
+
+$Servicos_sidebar = $Servicos_repositorio->listar_Servicos($pdo);
+
+?>
+
 <div class="wrapper">
     <div class="sideBar hide-on-med-and-down">
         <ul class="middle hide-on-med-and-down">
-            <li class="sideBar-li"><a href="perfil.php">Solicitação de serviço </a></li>
+            <li class="sideBar-li"><a href="Solicitacao de servicos.php">Solicitação de serviço </a></li>
 
             <li class="sideBar-li">
                 <button id="show-services">Serviços</button>
             </li>
 
             <div id="lista-Servicos" style="display:none;">
-                <li>Oi</li>
+                <?php
+                $contador = 1;
+                foreach ($Servicos_sidebar as $servicos) {
+                    // echo "<li> " . $servicos[1] . " </li>";
+                ?>
+                    <li>
+                        <form action="servico_tela-inicial.php" method="GET">
+                            <input type="hidden" name="servico" value=" <?php echo $servicos[1]; ?> ">
+                            <button class="botao-servicos"> <?php echo $contador . ". "  . $servicos[1];  ?> </button>
+                        </form>
+                    </li>
+                <?php
+                    $contador++;
+                }
+                ?>
             </div>
 
-            <!-- <li class="sideBar-li"><button>Serviços</button></li>
 
-            <div id="lista-Servicos" style="display:none;">
-                <li>Oi</li>
-            </div> -->
         </ul>
 
 
