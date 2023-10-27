@@ -10,3 +10,5 @@ $_SESSION['nomeServico'] = $_POST['nome'];
 $_SESSION['quantidade_emails'] = 1;
 
 $_SESSION['possui_info']
+
+$_SESSION['nomeServico']

@@ -30,7 +30,8 @@
 require_once "conexao.php";
 
 // Variáveis
-$nomeServico = $_GET['servico'];
+// $nomeServico = $_GET['servico'];
+$_SESSION['nomeServico'] = trim($_GET['servico']);
 
 /*
 * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -44,8 +45,12 @@ use model\Servicos_repositorio;
 
 $Servico_repositorio = new Servicos_repositorio();
 
-$Servico = $Servico_repositorio->consultar_byNome($nomeServico, $pdo);
 
+$servico_existe = $Servico_repositorio->servico_existe($_SESSION['nomeServico'], $pdo);
+
+if ($servico_existe) {
+  $Servico = $Servico_repositorio->consultar_byNome($_SESSION['nomeServico'], $pdo);
+}
 
 ?>
 
@@ -55,7 +60,16 @@ $Servico = $Servico_repositorio->consultar_byNome($nomeServico, $pdo);
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
-  <title><?php echo $nomeServico; ?> </title>
+
+  <?php
+  if ($servico_existe) {
+    echo "<title> " . $_SESSION['nomeServico'] . " </title>";
+  } else {
+    echo "<title> Serviço inválido </title>";
+  }
+  ?>
+
+  <title><?php echo $_SESSION['nomeServico']; ?> </title>
   <link href="../../Assets/Icons/android-chrome-192x192.png" rel="icon" type="image/png">
 
   <!-- CSS  -->
@@ -76,12 +90,25 @@ $Servico = $Servico_repositorio->consultar_byNome($nomeServico, $pdo);
 
     <div class="container">
       <br><br>
-      <h1 class="header center black-text"> <?php echo $nomeServico; ?> </h1>
-      <div class="row center">
-        <h5 class="header col s12 light">Começe a solicitação de um colaborador abaixo</h5>
-      </div>
 
-      <div class="row center">
+      <?php
+      if ($servico_existe == false) {
+      ?>
+        <h1 class="header center black-text">Serviço inválido </h1>
+        <div class="row center">
+          <h5 class="header col s12 light">Por favor, tente novamente</h5>
+        </div>
+      <?php
+      } else {
+      ?>
+        <h1 class="header center black-text"> <?php echo $_SESSION['nomeServico']; ?> </h1>
+        <div class="row center">
+          <h5 class="header col s12 light">Começe a solicitação de um colaborador abaixo</h5>
+        </div>
+
+
+        <div class="row center">
+        <a href="cadastrar servico.php" id="download-button" class="btn-large waves-effect waves-light blue">Filtro</a>
         <a href="cadastrar servico.php" id="download-button" class="btn-large waves-effect waves-light orange">Criar nova solicitação</a>
       </div>
       <br>
@@ -98,7 +125,16 @@ $Servico = $Servico_repositorio->consultar_byNome($nomeServico, $pdo);
         <tbody>
         </tbody>
       </table>
-    
+
+
+
+      <?php
+      }
+      ?>
+
+
+
+      
 
     </div>
 
