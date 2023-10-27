@@ -109,7 +109,7 @@ if ($servico_existe) {
 
         <div class="row center">
         <a href="cadastrar servico.php" id="download-button" class="btn-large waves-effect waves-light blue">Filtro</a>
-        <a href="cadastrar servico.php" id="download-button" class="btn-large waves-effect waves-light orange">Criar nova solicitação</a>
+        <a href="solicitacao colaborador.php" id="download-button" class="btn-large waves-effect waves-light orange">Criar nova solicitação</a>
       </div>
       <br>
 
