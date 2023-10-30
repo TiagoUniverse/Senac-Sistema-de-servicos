@@ -133,7 +133,7 @@ $TOTVS_repositorio = new TOTVS_repositorio();
               <div class="row">
                 <div class="row">
                   <div class="input-field col s12">
-                    <input value="" name="cpf" id="cpf" type="number" onKeyDown="if(this.value.length==13 && event.keyCode!=8) return false;" class="validate" required>
+                    <input value="" name="cpf" id="cpf" type="number" onKeyDown="if(this.value.length==13 && event.keyCode!=8) return false;"  class="validate" required>
                     <label for="cpf">CPF:</label>
                   </div>
                 </div>

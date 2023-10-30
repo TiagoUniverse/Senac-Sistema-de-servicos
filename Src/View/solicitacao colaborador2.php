@@ -29,9 +29,11 @@
 
 require_once "conexao.php";
 
-
 // Variáveis
-
+$nomeColaborador = $_POST['nomeColaborador'];
+$cpf = $_POST['cpf'];
+$email_pessoal = $_POST['email_pessoal'];
+$telefone = $_POST['telefone'];
 
 /*
 * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -41,12 +43,35 @@ require_once "conexao.php";
 
 require_once "../model/Servicos_repositorio.php";
 
-
 use model\Servicos_repositorio;
 
 $Servico_repositorio = new Servicos_repositorio();
 
+/*
+* ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+* │  Validation' SECTION                                                                                          │
+* └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+*/
+$fundo_vermelho = true;
+if (!isset($_POST['nomeColaborador'])) {
+  $mensagem = "Nome do colaborador não encontrado.";
+} else if (!isset($_POST['cpf'])) {
+  $mensagem = "CPF do colaborador não encontrado.";
+} else if (!isset($_POST['email_pessoal'])) {
+  $mensagem = "E-mail pessoal do colaborador não encontrado.";
+} else if (!isset($_POST['telefone'])) {
+  $mensagem = "Telefone do colaborador não encontrado";
+} else if (strlen($_POST['nomeColaborador']) > 200) {
+  $mensagem = "Nome do colaborador ultrapassou o limite. Por favor, preencha novamente";
+} else if (strlen($cpf) < 11) {
+  $mensagem = "CPF com digitos insuficientes. Por favor, preencha novamente";
+} else if (filter_var($_POST['email_pessoal'], FILTER_VALIDATE_EMAIL) == false) {
+  $mensagem = "E-mail pessoal cadastrado incorretamente. Por favor, preencha novamente";
+} else {
+  $fundo_vermelho = false;
 
+  $mensagem = "Solicitação de colaborador feita com sucesso!";
+}
 
 
 ?>
@@ -85,14 +110,24 @@ $Servico_repositorio = new Servicos_repositorio();
         <button class="botao-voltar" type="submit">Voltar</button>
       </form>
 
-      
+      <h1 class="header center black-text"> <?php echo  $_SESSION['nomeServico'] . ": Solicitação de colaborador" ?> </h1>
 
-
-
-
+      <h3 class="header center black-text">Resultado:</h3>
+      <br>
+      <?php
+      if ($fundo_vermelho) {
+        echo "<div class='div-error'>";
+      } else {
+        echo "<div class='div-sucess'>";
+      }
+      ?>
+      <h3 class='header center col s12 light'> <?php echo $mensagem; ?> </h3>
     </div>
 
-    <?php require_once "Recursos/sidebar_fim.php"; ?>
+
+  </div>
+
+  <?php require_once "Recursos/sidebar_fim.php"; ?>
   </div>
 
 

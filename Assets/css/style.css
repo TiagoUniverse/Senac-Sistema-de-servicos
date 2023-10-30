@@ -142,3 +142,11 @@
   border-radius: 15px;
   color: white;
 }
+
+.div-sucess{
+  background-color: green;
+  height: 94px;
+  box-shadow: 0px 0px 3px black;
+  border-radius: 15px;
+  color: white;
+}
