@@ -29,6 +29,25 @@
 
 require_once "conexao.php";
 
+// Variáveis
+if (isset($_POST['nomeServico'])){
+  $_SESSION['nomeServico'] = trim($_POST['nomeServico']);
+}
+
+
+if (isset($_POST['idServico'])){
+  $_SESSION['idServico'] = trim($_POST['idServico']);
+}
+
+
+
+/*
+* ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+* │  ValidaCPF'S SECTION                                                                                          │
+* └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+*/
+
+require_once "./Recursos/CpfValidacao.php";
 
 /*
 * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -38,9 +57,12 @@ require_once "conexao.php";
 
 require_once "../model/Servicos_repositorio.php";
 
+
 use model\Servicos_repositorio;
 
 $Servico_repositorio = new Servicos_repositorio();
+
+
 
 ?>
 
@@ -72,6 +94,12 @@ $Servico_repositorio = new Servicos_repositorio();
 
     <div class="container">
       <br><br>
+
+      <form action="servico_tela-inicial.php" method="get">
+        <input type="hidden" name="servico" value="<?php echo $_SESSION['nomeServico']; ?> "> 
+        <button class="botao-voltar" type="submit">Voltar</button>
+      </form>
+
       <h1 class="header center black-text"> <?php echo  $_SESSION['nomeServico'] . ": Solicitação de colaborador" ?> </h1>
 
       <?php
@@ -82,7 +110,7 @@ $Servico_repositorio = new Servicos_repositorio();
         </div>
 
         <!-- <h3 class="header col s12 light"> 1. Informações gerais </h3> -->
-        <form action="cadastrar servico2.php" method="post" enctype="multipart/form-data">
+        <form action="solicitacao colaborador.php" method="post" enctype="multipart/form-data">
           <div class="row center">
             <div class="input-field col s12">
               <input type="hidden" name="status_cadastro" value="SOLICITANDO UM NOVO COLABORADOR">
@@ -90,8 +118,8 @@ $Servico_repositorio = new Servicos_repositorio();
               <div class="row">
                 <div class="row">
                   <div class="input-field col s12">
-                    <input value="" name="nome" id="nome" type="text" class="validate" required>
-                    <label for="nome">CPF:</label>
+                    <input value="" name="cpf" id="cpf" type="number" onKeyDown="if(this.value.length==13 && event.keyCode!=8) return false;" class="validate" required>
+                    <label for="cpf">CPF:</label>
                   </div>
                 </div>
 
@@ -109,6 +137,15 @@ $Servico_repositorio = new Servicos_repositorio();
 
       <?php
       } else {
+        $validacaoCPF = validaCPF($_POST['cpf']);
+
+
+        if($validacaoCPF){
+          echo "CPF Válido!";
+        } else {
+           echo "CPF inválido";
+        }
+
       }
 
       ?>

@@ -5,6 +5,9 @@ $_SESSION['connected'] = '1';
       $_SESSION['administrador'] = $Usuario[11];
 
 $_SESSION['nomeServico'] = $_POST['nome'];
+
+$_SESSION['idServico']   (30/10/23)
+
   $_SESSION['descricaoServico'] = $_POST['descricao'];
 
 $_SESSION['quantidade_emails'] = 1;

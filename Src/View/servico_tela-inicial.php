@@ -108,23 +108,29 @@ if ($servico_existe) {
 
 
         <div class="row center">
-        <a href="cadastrar servico.php" id="download-button" class="btn-large waves-effect waves-light blue">Filtro</a>
-        <a href="solicitacao colaborador.php" id="download-button" class="btn-large waves-effect waves-light orange">Criar nova solicitação</a>
-      </div>
-      <br>
+          <a href="cadastrar servico.php" id="download-button" class="btn-large waves-effect waves-light blue">Filtro</a>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Colaborador</th>
-            <th>Opções</th>
-            <th>Deletar</th>
-          </tr>
-        </thead>
 
-        <tbody>
-        </tbody>
-      </table>
+          <form style="display:inline;" action="solicitacao colaborador.php" method="post">
+            <input type="hidden" name="nomeServico" value="<?php echo $_GET['servico'] ?> "> 
+            <input type="hidden" name="idServico" value="<?php echo $Servico[0]; ?> "> 
+            <button type="submit" id="download-button" class="btn-large waves-effect waves-light orange">Criar nova solicitação</button>
+          </form>
+        </div>
+        <br>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Colaborador</th>
+              <th>Opções</th>
+              <th>Deletar</th>
+            </tr>
+          </thead>
+
+          <tbody>
+          </tbody>
+        </table>
 
 
 
@@ -134,7 +140,7 @@ if ($servico_existe) {
 
 
 
-      
+
 
     </div>
 

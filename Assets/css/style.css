@@ -119,3 +119,12 @@
   color: white;
   font-size: 20px;
 }
+
+
+.botao-voltar{
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: #039be5;
+  font-size: 18px;
+}
