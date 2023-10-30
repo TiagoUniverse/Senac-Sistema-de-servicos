@@ -255,10 +255,11 @@ from
      * │ INSERT                                                                                                        │
      * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
      */
-    INSERT INTO [StatusTimeline]
-        ([descricao]) 
-    VALUES 
-        ('Conclusão da operação'); 
+    Insert into StatusTimeline 
+(descricao)
+
+values
+('Solicitação do colaborador criado. Aguardando o aceite do colaborador através do e-mail')
 
 
 /**	=================================================================================================================== **/
