@@ -49,6 +49,18 @@ $Colaborador_repositorio = new Colaborador_repositorio();
 
 /*
 * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+* │  Timeline'S SECTION                                                                                           │
+* └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+*/
+
+require_once "../model/Timeline_repositorio.php";
+
+use model\Timeline_repositorio;
+
+$Timeline_repositorio = new Timeline_repositorio();
+
+/*
+* ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 * │  Validation' SECTION                                                                                          │
 * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 */
@@ -67,15 +79,21 @@ if (!isset($_POST['nomeColaborador'])) {
   $mensagem = "CPF com digitos insuficientes. Por favor, preencha novamente";
 } else if (filter_var($_POST['email_pessoal'], FILTER_VALIDATE_EMAIL) == false) {
   $mensagem = "E-mail pessoal cadastrado incorretamente. Por favor, preencha novamente";
-} else if ($Colaborador_repositorio->existe_cpf($_POST['cpf'] , $_SESSION['idServico'] , $pdo ) == false){
+} else if ($Colaborador_repositorio->existe_cpf($_POST['cpf'] , $_SESSION['idServico'] , $pdo ) == true){
   $mensagem = "Solicitação de colaborador já criada! Por favor, solicite para outro colaborador.";
 } else {
   $fundo_vermelho = false;
 
   $mensagem = "Solicitação de colaborador feita com sucesso!";
 
+  // 1ª Cadastro da solicitacao do colaborador
   $Colaborador_repositorio->cadastro($nomeColaborador, $cpf, $email_pessoal, $telefone, $_SESSION['idServico'] , $pdo);
 
+  // 2ª Consultar Colaborador
+  $Colaborador = $Colaborador_repositorio->consultar_colaboradorCriado($cpf, $_SESSION['idServico'] , $pdo);
+
+  // 3ª Cadastro da timeline
+  $Timeline_repositorio->cadastrar_timeline("Solicitação do colaborador criado. Aguardando o aceite do colaborador através do e-mail." , $Colaborador[0], 1, $pdo );
 
 }
 

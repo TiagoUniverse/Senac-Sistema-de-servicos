@@ -44,6 +44,8 @@ class Colaborador_repositorio
         try {
             $stmt = $pdo->prepare("Insert into Colaborador (nome, cpf, email_pessoal, telefone , idServicos) VALUES (:nome, :cpf, :email_pessoal, :telefone , :idServicos) ");
 
+
+            
             $stmt->execute(array(
                 ":nome" => $nome,
                 ":cpf" => $cpf,
@@ -79,6 +81,41 @@ class Colaborador_repositorio
             }
 
             return false;
+        } catch (PDOException $err) {
+            echo $err->getMessage();
+        }
+    }
+    
+    /*
+    * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+    * │  Função para consultar o colaborador que acabou de ser criado                                                 │
+    * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+    */
+    function consultar_colaboradorCriado($cpf, $idServicos,  $pdo)
+    {
+        try {
+            $stmt = $pdo->prepare(" Select * from Colaborador where status = 'ATIVO' and idServicos = :idServicos and cpf = :cpf ");
+
+            $stmt->execute(array(
+                ":idServicos" => $idServicos,
+                ":cpf" => $cpf
+            ));
+
+            $Colaborador = array();
+            while ($linha = $stmt->fetch(\PDO::FETCH_ASSOC)){
+                $idColaborador = $linha['id'];
+                $nomeColaborador = $linha['nome'];
+                $cpf = $linha['cpf'];
+                $email_pessoal = $linha['email_pessoal'];
+                $telefone = $linha['telefone'];
+                $status = $linha['status'];
+                $created = $linha['created'];
+                $updated = $linha['updated'];
+
+                $Colaborador = array($idColaborador, $nomeColaborador, $cpf, $email_pessoal, $telefone, $status, $created, $updated);
+            }
+            return $Colaborador;
+
         } catch (PDOException $err) {
             echo $err->getMessage();
         }

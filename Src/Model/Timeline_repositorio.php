@@ -43,7 +43,7 @@ class Timeline_repositorio
     {
         try {
 
-            $stmt = $pdo->prepare(" Insert INTO (descricao, idColaborador, idStatusTimeline) VALUES (:descricao, :idColaborador , :idStatusTimeline)	");
+            $stmt = $pdo->prepare(" Insert INTO Timeline (descricao, idColaborador, idStatusTimeline) VALUES (:descricao, :idColaborador , :idStatusTimeline)	");
 
             $stmt->execute(array(
                 ":descricao" => $descricao,
