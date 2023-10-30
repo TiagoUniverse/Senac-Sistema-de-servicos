@@ -29,13 +29,15 @@
 
 require_once "conexao.php";
 
+require_once "conexao_TermoAceite.php";
+
 // Variáveis
-if (isset($_POST['nomeServico'])){
+if (isset($_POST['nomeServico'])) {
   $_SESSION['nomeServico'] = trim($_POST['nomeServico']);
 }
 
 
-if (isset($_POST['idServico'])){
+if (isset($_POST['idServico'])) {
   $_SESSION['idServico'] = trim($_POST['idServico']);
 }
 
@@ -61,6 +63,19 @@ require_once "../model/Servicos_repositorio.php";
 use model\Servicos_repositorio;
 
 $Servico_repositorio = new Servicos_repositorio();
+
+/*
+* ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+* │  TOTVS'S SECTION                                                                                              │
+* └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+*/
+
+require_once "../model/TOTVS_repositorio.php";
+
+
+use model\TOTVS_repositorio;
+
+$TOTVS_repositorio = new TOTVS_repositorio();
 
 
 
@@ -96,7 +111,7 @@ $Servico_repositorio = new Servicos_repositorio();
       <br><br>
 
       <form action="servico_tela-inicial.php" method="get">
-        <input type="hidden" name="servico" value="<?php echo $_SESSION['nomeServico']; ?> "> 
+        <input type="hidden" name="servico" value="<?php echo $_SESSION['nomeServico']; ?> ">
         <button class="botao-voltar" type="submit">Voltar</button>
       </form>
 
@@ -135,17 +150,73 @@ $Servico_repositorio = new Servicos_repositorio();
 
         </form>
 
-      <?php
+        <?php
       } else {
         $validacaoCPF = validaCPF($_POST['cpf']);
 
 
-        if($validacaoCPF){
-          echo "CPF Válido!";
-        } else {
-           echo "CPF inválido";
-        }
+        if ($validacaoCPF) {
 
+          $TOTVS = $TOTVS_repositorio->consultar_cpf($_POST['cpf'], $pdo_TermoAceite);
+
+          if ($TOTVS == false) {
+            echo "Colaborador não registrado no TOTVS. Por favor, tente com outro CPF";
+          } else {
+        ?>
+
+            <br>
+            <h3 class="header col s12 light"> CPF validado. Prossiga com o a solicitação </h3>
+            <form action="cadastrar servico2.php" method="post" enctype="multipart/form-data">
+              <div class="row center">
+                <div class="input-field col s12">
+                  <input type="hidden" name="cpf" value="<?php echo $_POST['cpf']; ?> ">
+
+                  <div class="row">
+                    <div class="row">
+                      <div class="input-field col s12">
+                        <input value="" name="nomeColaborador"  id="nomeColaborador" type="text" class="validate" required>
+                        <label for="nomeColaborador">Nome do colaborador:</label>
+                      </div>
+                    </div>
+                  
+                    <div class="row">
+                      <div class="input-field col s12">
+                        <input value=" <?php echo $_POST['cpf']; ?> " name="cpf" id="cpf" type="text" class="validate"  disabled>
+                        <label for="cpf">CPF:</label>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="input-field col s12">
+                        <input value="" name="email_pessoal" id="email_pessoal" type="email" class="validate" required>
+                        <label for="email_pessoal">E-mail pessoal do colaborador:</label>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="input-field col s12">
+                        <input value="" name="telefone" id="telefone" type="number" class="validate" required>
+                        <label for="telefone">Telefone:</label>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+
+              <div class="row center">
+                <button type="submit" id="download-button" class="btn-large waves-effect waves-light orange">Continuar</button>
+              </div>
+
+            </form>
+
+
+      <?php
+          }
+        } else {
+          echo "CPF inválido";
+        }
       }
 
       ?>
