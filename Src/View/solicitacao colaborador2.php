@@ -37,15 +37,15 @@ $telefone = $_POST['telefone'];
 
 /*
 * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-* │  Servicos'S SECTION                                                                                           │
+* │  Colaborador'S SECTION                                                                                        │
 * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 */
 
-require_once "../model/Servicos_repositorio.php";
+require_once "../model/Colaborador_repositorio.php";
 
-use model\Servicos_repositorio;
+use model\Colaborador_repositorio;
 
-$Servico_repositorio = new Servicos_repositorio();
+$Colaborador_repositorio = new Colaborador_repositorio();
 
 /*
 * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -67,10 +67,16 @@ if (!isset($_POST['nomeColaborador'])) {
   $mensagem = "CPF com digitos insuficientes. Por favor, preencha novamente";
 } else if (filter_var($_POST['email_pessoal'], FILTER_VALIDATE_EMAIL) == false) {
   $mensagem = "E-mail pessoal cadastrado incorretamente. Por favor, preencha novamente";
+} else if ($Colaborador_repositorio->existe_cpf($_POST['cpf'] , $_SESSION['idServico'] , $pdo ) == false){
+  $mensagem = "Solicitação de colaborador já criada! Por favor, solicite para outro colaborador.";
 } else {
   $fundo_vermelho = false;
 
   $mensagem = "Solicitação de colaborador feita com sucesso!";
+
+  $Colaborador_repositorio->cadastro($nomeColaborador, $cpf, $email_pessoal, $telefone, $_SESSION['idServico'] , $pdo);
+
+
 }
 
 

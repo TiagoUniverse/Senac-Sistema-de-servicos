@@ -34,38 +34,54 @@ use PDOException;
 class Colaborador_repositorio
 {
 
-    // /*
-    // * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-    // * │  Função para listar todos os serviços já criados                                                              │
-    // * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-    // */
-    // function listar_Servicos($pdo)
-    // {
-    //     try {
-    //         $stmt = $pdo->prepare("Select * from Servicos where status = 'ATIVO' ");
+   /*
+    * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+    * │  Função para cadastrar um nova solicitacao de colaborador                                                     │
+    * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+    */
+    function cadastro($nome, $cpf, $email_pessoal, $telefone, $idServicos,  $pdo)
+    {
+        try {
+            $stmt = $pdo->prepare("Insert into Colaborador (nome, cpf, email_pessoal, telefone , idServicos) VALUES (:nome, :cpf, :email_pessoal, :telefone , :idServicos) ");
 
-    //         $stmt->execute();
+            $stmt->execute(array(
+                ":nome" => $nome,
+                ":cpf" => $cpf,
+                ":email_pessoal" => $email_pessoal,
+                ":telefone" => $telefone,
+                ":idServicos" => $idServicos
+            ));
 
-    //         $lista_Servicos = array();
-    //         while ($linha = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-    //             $id = $linha['id'];
-    //             $nome = $linha['nome'];
-    //             $descricao = $linha['descricao'];
-    //             $status = $linha['status'];
-    //             $created = $linha['created'];
-    //             $updated = $linha['updated'];
-    //             $idUsuario = $linha['idUsuario'];
-
-    //             $lista_Servicos[] = array($id, $nome, $descricao, $status, $created, $updated, $idUsuario);
-            
-    //         }
-    //         return $lista_Servicos;
-    //     } catch (PDOException $err) {
-    //         echo $err->getMessage();
-    //     }
-    // }
-
+            return true;
+        } catch (PDOException $err) {
+            echo $err->getMessage();
+        }
+    }
    
+    /*
+    * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+    * │  Função para verificar se um cpf já foi cadastrado para um determinado serviço                                │
+    * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+    */
+    function existe_cpf($cpf, $idServicos,  $pdo)
+    {
+        try {
+            $stmt = $pdo->prepare(" Select * from Colaborador where status = 'ATIVO' and idServicos = :idServicos and cpf = :cpf ");
 
-    
+            $stmt->execute(array(
+                ":idServicos" => $idServicos,
+                ":cpf" => $cpf
+            ));
+
+            while ($linha = $stmt->fetch(\PDO::FETCH_ASSOC)){
+                // encontrou
+                return true;
+            }
+
+            return false;
+        } catch (PDOException $err) {
+            echo $err->getMessage();
+        }
+    }
+
 }
