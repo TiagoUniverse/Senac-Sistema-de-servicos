@@ -101,7 +101,7 @@ class Colaborador_repositorio
                 ":cpf" => $cpf
             ));
 
-            $Colaborador = array();
+            $Colaborador = null;
             while ($linha = $stmt->fetch(\PDO::FETCH_ASSOC)){
                 $idColaborador = $linha['id'];
                 $nomeColaborador = $linha['nome'];
@@ -113,6 +113,40 @@ class Colaborador_repositorio
                 $updated = $linha['updated'];
 
                 $Colaborador = array($idColaborador, $nomeColaborador, $cpf, $email_pessoal, $telefone, $status, $created, $updated);
+            }
+            return $Colaborador;
+
+        } catch (PDOException $err) {
+            echo $err->getMessage();
+        }
+    }
+    
+    /*
+    * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+    * │  Função para consultar o colaborador que acabou de ser criado                                                 │
+    * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+    */
+    function listar_colaboradorServico($idServicos,  $pdo)
+    {
+        try {
+            $stmt = $pdo->prepare(" Select * from Colaborador where status = 'ATIVO' and idServicos = :idServicos ");
+
+            $stmt->execute(array(
+                ":idServicos" => $idServicos
+            ));
+
+            $Colaborador = null;
+            while ($linha = $stmt->fetch(\PDO::FETCH_ASSOC)){
+                $idColaborador = $linha['id'];
+                $nomeColaborador = $linha['nome'];
+                $cpf = $linha['cpf'];
+                $email_pessoal = $linha['email_pessoal'];
+                $telefone = $linha['telefone'];
+                $status = $linha['status'];
+                $created = $linha['created'];
+                $updated = $linha['updated'];
+
+                $Colaborador[] = array($idColaborador, $nomeColaborador, $cpf, $email_pessoal, $telefone, $status, $created, $updated);
             }
             return $Colaborador;
 

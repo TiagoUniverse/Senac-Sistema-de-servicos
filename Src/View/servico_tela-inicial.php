@@ -45,11 +45,25 @@ use model\Servicos_repositorio;
 
 $Servico_repositorio = new Servicos_repositorio();
 
+/*
+* ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+* │  Colaborador'S SECTION                                                                                        │
+* └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+*/
+
+require_once "../model/Colaborador_repositorio.php";
+
+use model\Colaborador_repositorio;
+
+$Colaborador_repositorio = new Colaborador_repositorio();
+
 
 $servico_existe = $Servico_repositorio->servico_existe($_SESSION['nomeServico'], $pdo);
 
 if ($servico_existe) {
   $Servico = $Servico_repositorio->consultar_byNome($_SESSION['nomeServico'], $pdo);
+
+  $lista_colaborador = $Colaborador_repositorio->listar_colaboradorServico($Servico[0], $pdo);
 }
 
 ?>
@@ -112,8 +126,8 @@ if ($servico_existe) {
 
 
           <form style="display:inline;" action="solicitacao colaborador.php" method="post">
-            <input type="hidden" name="nomeServico" value="<?php echo $_GET['servico'] ?> "> 
-            <input type="hidden" name="idServico" value="<?php echo $Servico[0]; ?> "> 
+            <input type="hidden" name="nomeServico" value="<?php echo $_GET['servico'] ?> ">
+            <input type="hidden" name="idServico" value="<?php echo $Servico[0]; ?> ">
             <button type="submit" id="download-button" class="btn-large waves-effect waves-light orange">Criar nova solicitação</button>
           </form>
         </div>
@@ -129,6 +143,51 @@ if ($servico_existe) {
           </thead>
 
           <tbody>
+            <tr>
+              <?php
+              foreach ($lista_colaborador as $colaborador) {
+              ?>
+
+                <th> <?php echo $colaborador[1];  ?> </th>
+
+                <td>
+                <!-- Dropdown Trigger -->
+                <a class='dropdown-trigger btn' href='#' data-target='dropdown1'>Drop Me!</a>
+
+                <!-- Dropdown Structure -->
+                <ul id='dropdown1' class='dropdown-content'>
+                  <li><a href="#!">one</a></li>
+                  <li><a href="#!">two</a></li>
+                  <li class="divider" tabindex="-1"></li>
+                  <li><a href="#!">three</a></li>
+                  <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
+                  <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
+                </ul>
+              </td>
+
+              <td>
+                <!-- Modal Trigger -->
+                <a class="waves-effect #ef5350 red lighten-1 btn modal-trigger" href="#modal1">Excluir</a>
+
+                <!-- Modal Structure -->
+                <div id="modal1" class="modal">
+                  <div class="modal-content">
+                    <h4>Modal Header</h4>
+                    <p>A bunch of text</p>
+                  </div>
+                  <div class="modal-footer">
+                    <a href='#!' class='modal-close waves-effect waves-green btn-flat'>Cancelar</a>
+                    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Excluir</a>
+                  </div>
+                </div>
+
+              </td>
+
+              <?php
+              }
+
+              ?>
+            </tr>
           </tbody>
         </table>
 
