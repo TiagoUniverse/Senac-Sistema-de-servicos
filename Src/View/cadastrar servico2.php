@@ -274,14 +274,14 @@ foreach ($lista_status as $status) {
                     <div class="row">
                       <div class="input-field col s12">
                         <textarea style="color: rgb(7,7,7);" id="Descricao<?php echo $contador; ?>" name="Descricao[]" class="materialize-textarea" required></textarea>
-                        <label  style="color: rgb(7,7,7);" for="Descricao<?php echo $contador; ?>">Descrição do e-mail que será enviado:</label>
+                        <label style="color: rgb(7,7,7);" for="Descricao<?php echo $contador; ?>">Descrição do e-mail que será enviado:</label>
                       </div>
                     </div>
 
 
                     <!-- Email destinatario -->
                     <div class="row">
-                      <label class="left" style="color: rgb(7,7,7);"  style="margin-left: 11px;">E-mails destinatários:</label>
+                      <label class="left" style="color: rgb(7,7,7);" style="margin-left: 11px;">E-mails destinatários:</label>
                       <div class="input-field col s12">
 
 
@@ -365,35 +365,10 @@ foreach ($lista_status as $status) {
                     <?php
                     }
 
-
-                    // Template de Aceite do 1ª email
-                    if ($contador == 1) {
-                    ?>
-
-                      <div class="row">
-                        <div class="input-field col s12">
-                          <textarea style="color: rgb(7,7,7);" name="templateAceite[]" id="emailAceite<?php echo $contador; ?>" class="materialize-textarea" required></textarea>
-                          <label style="color: rgb(7,7,7);" for="emailAceite<?php echo $contador; ?>">Caso tenha selecionado 'Email de aceite', por favor informe o texto que o colaborador irá visualizar na tela de aceite:</label>
-                        </div>
-                      </div>
-                    <?php
-                    } else {
-                    ?>
-                      <div class="row">
-                        <div class="input-field col s12">
-                          <textarea style="color: rgb(7,7,7); display: none;" name="templateAceite[]" id="emailAceite<?php echo $contador; ?>" class="materialize-textarea"></textarea>
-                          <label style="color: rgb(7,7,7);" for="emailAceite<?php echo $contador; ?>">Caso tenha selecionado 'Email de aceite', por favor informe o texto que o colaborador irá visualizar na tela de aceite:</label>
-                        </div>
-                      </div>
-                    <?php
-                    }
                     ?>
 
 
-
-
-                    <br>
-                    <label style="color: rgb(7,7,7); " for="ArquivoProjeto">Insira os anexos do email, caso deseje. Os arquivos são opcionais.</label>
+                    <label style="color: rgb(7,7,7); " for="ArquivoProjeto">Insira os anexos do <u>email</u>, caso deseje. Os arquivos são opcionais.</label>
                     <div class="file-field input-field">
                       <div class="btn">
                         <span>Arquivo</span>
@@ -403,6 +378,81 @@ foreach ($lista_status as $status) {
                         <input class="file-path validate" type="text">
                       </div>
                     </div>
+
+
+
+                    <br>
+                    <?php
+                    // Template de Aceite do 1ª email
+                    if ($contador == 1) {
+                    ?>
+
+                      <!-- <div class="row">
+                        <div class="input-field col s12">
+                          <textarea style="color: rgb(7,7,7);" name="templateAceite[]" id="emailAceite<?php echo $contador; ?>" class="materialize-textarea" required></textarea>
+                          <label style="color: rgb(7,7,7);" for="emailAceite<?php echo $contador; ?>">Caso tenha selecionado 'Email de aceite', por favor informe o texto que o colaborador irá visualizar na tela de aceite:</label>
+                        </div>
+                      </div> -->
+                      <div class="Div-TemplateAceite" id="Div-TemplateAceite<?php echo $contador; ?>">
+                        <div class="row">
+                          <div class="input-field col s12">
+                            <textarea style="color: rgb(7,7,7);" required id="emailAceite<?php echo $contador; ?>" class="materialize-textarea"></textarea>
+                            <label for="emailAceite<?php echo $contador; ?>">Caso tenha selecionado 'Email de aceite', por favor informe o texto que o colaborador irá visualizar na tela de aceite:</label>
+                          </div>
+                        </div>
+
+
+                        <br>
+                        <label style="color: rgb(7,7,7);" for="ArquivoProjeto">Insira os anexos que serão exibidos na <u>tela de aceite</u>, caso deseje. Os arquivos são opcionais.</label>
+                        <div class="file-field input-field">
+                          <div class="btn">
+                            <span>Arquivo</span>
+                            <input type="file" id="ArquivoProjeto" name="ArquivoProjeto<?php echo $contador; ?>[]" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" multiple>
+                          </div>
+                          <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text">
+                          </div>
+                        </div>
+                      </div>
+
+                    <?php
+                    } else {
+                    ?>
+                      <!-- <div class="row">
+                        <div class="input-field col s12">
+                          <textarea style="color: rgb(7,7,7); display: none;" name="templateAceite[]" id="emailAceite<?php echo $contador; ?>" class="materialize-textarea"></textarea>
+                          <label style="color: rgb(7,7,7);" for="emailAceite<?php echo $contador; ?>">Caso tenha selecionado 'Email de aceite', por favor informe o texto que o colaborador irá visualizar na tela de aceite:</label>
+                        </div>
+                      </div> -->
+                      <div class="Div-TemplateAceite" id="Div-TemplateAceite<?php echo $contador; ?>" style="display: none;">
+                        <div class="row">
+                          <div class="input-field col s12">
+                            <textarea style="color: rgb(7,7,7);" id="emailAceite<?php echo $contador; ?>" class="materialize-textarea"></textarea>
+                            <label for="emailAceite<?php echo $contador; ?>">Caso tenha selecionado 'Email de aceite', por favor informe o texto que o colaborador irá visualizar na tela de aceite:</label>
+                          </div>
+                        </div>
+
+
+                        <br>
+                        <label style="color: rgb(7,7,7);" for="ArquivoProjeto">Insira os anexos que serão exibidos na <u>tela de aceite</u>, caso deseje. Os arquivos são opcionais.</label>
+                        <div class="file-field input-field">
+                          <div class="btn">
+                            <span>Arquivo</span>
+                            <input type="file" id="ArquivoProjeto" name="ArquivoProjeto<?php echo $contador; ?>[]" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" multiple>
+                          </div>
+                          <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text">
+                          </div>
+                        </div>
+                      </div>
+                    <?php
+                    }
+                    ?>
+
+
+
+
+
 
 
                   </div>
@@ -419,7 +469,7 @@ foreach ($lista_status as $status) {
             ?>
 
 
-            <button  type="submit" name="criar_servico" id="download-button" class="botao-email btn-large waves-effect waves-light orange">Criar novo serviço</button>
+            <button type="submit" name="criar_servico" id="download-button" class="botao-email btn-large waves-effect waves-light orange">Criar novo serviço</button>
 
 
           </form>
@@ -515,14 +565,19 @@ foreach ($lista_status as $status) {
       ?>
         const tipoEmailSelect<?php echo $contador; ?> = document.getElementById("tipoEmail<?php echo $contador; ?>");
         const emailAceiteTextarea<?php echo $contador; ?> = document.getElementById("emailAceite<?php echo $contador; ?>");
+        const divTemplateAceite<?php echo $contador; ?> = document.getElementById("Div-TemplateAceite<?php echo $contador; ?>");
 
-        tipoEmailSelect<?php echo $contador; ?>.addEventListener("change", function() {
-          if (tipoEmailSelect<?php echo $contador; ?>.value === "1") {
-            emailAceiteTextarea<?php echo $contador; ?>.style.display = "block";
-          } else {
-            emailAceiteTextarea<?php echo $contador; ?>.style.display = "none";
-          }
-        });
+        if (tipoEmailSelect<?php echo $contador; ?> && emailAceiteTextarea<?php echo $contador; ?>) {
+          tipoEmailSelect<?php echo $contador; ?>.addEventListener("change", function() {
+            if (tipoEmailSelect<?php echo $contador; ?>.value === "1") {
+              emailAceiteTextarea<?php echo $contador; ?>.style.display = "block";
+              divTemplateAceite<?php echo $contador; ?>.style.display = "block";
+            } else {
+              emailAceiteTextarea<?php echo $contador; ?>.style.display = "none";
+              divTemplateAceite<?php echo $contador; ?>.style.display = "none";
+            }
+          });
+        }
       <?php
       }
       ?>
