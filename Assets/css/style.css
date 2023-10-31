@@ -150,3 +150,10 @@
   border-radius: 15px;
   color: white;
 }
+
+
+
+/* Adicione isso ao seu CSS para ocultar os campos destinatário */
+.destinatarioColaborador-container{
+  display: none;
+}
