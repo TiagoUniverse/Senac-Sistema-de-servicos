@@ -49,6 +49,18 @@ $Colaborador_repositorio = new Colaborador_repositorio();
 
 /*
 * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+* │  Template_Email'S SECTION                                                                                     │
+* └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+*/
+
+require_once "../model/Template_Email_repositorio.php";
+
+use model\Template_Email_repositorio;
+
+$Template_Email_repositorio = new Template_Email_repositorio();
+
+/*
+* ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 * │  Timeline'S SECTION                                                                                           │
 * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 */
@@ -94,6 +106,11 @@ if (!isset($_POST['nomeColaborador'])) {
 
   // 3ª Cadastro da timeline
   $Timeline_repositorio->cadastrar_timeline("Solicitação do colaborador criado. Aguardando o aceite do colaborador através do e-mail." , $Colaborador[0], 1, $pdo );
+
+  // 4ª Consultar as informações do Template do 1ª email
+  $Template_Email = $Template_Email_repositorio->consultar_ByIdServicos_OrdemEmail($_SESSION['idServico'], 1, $pdo);
+
+  // 5ª E
 
 }
 

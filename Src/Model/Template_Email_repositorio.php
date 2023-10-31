@@ -91,4 +91,36 @@ class Template_Email_repositorio
             echo $err->getMessage();
         }
     }
+    
+    /*
+    * ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+    * │  Função para buscar um template de email específico [31/10/23]                                                │
+    * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+    */
+    function consultar_ByIdServicos_OrdemEmail( $idServicos, $ordem_emails, $pdo)
+    {
+        try {
+            $stmt = $pdo->prepare("Select * from Template_Email where status = 'ATIVO' and idServicos = :idServicos and ordem_emails = :ordem_emails  ");
+
+            $stmt->execute(array(
+                ":idServicos" => $idServicos,
+                ":ordem_emails" => $ordem_emails
+            ));
+
+            while ($linha = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+                $id = $linha['id'];
+                $descricao = $linha['descricao'];
+                $created = $linha['created'];
+                $updated = $linha['updated'];
+                $idStatus_TemplateEmail = $linha['idStatus_TemplateEmail'];
+                $idServico = $linha['idServicos'];
+                $ordem_emails = $linha['ordem_emails'];
+
+                $Template_Email = array($id, $descricao, $created, $updated, $idStatus_TemplateEmail, $idServico, $ordem_emails);
+            }
+            return $Template_Email;
+        } catch (PDOException $err) {
+            echo $err->getMessage();
+        }
+    }
 }
