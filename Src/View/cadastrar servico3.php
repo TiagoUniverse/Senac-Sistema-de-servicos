@@ -146,6 +146,7 @@ $Anexo_repositorio = new Anexo_repositorio();
   * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
   */
   $fundo_vermelho = true;
+
   if (
     isset($_POST['Descricao'])
     && isset($_POST['destinatario1'])
@@ -195,7 +196,7 @@ $Anexo_repositorio = new Anexo_repositorio();
         // 7ª Cadastro dos Anexos de um Template de E-mail
         /**
          * ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
-         * ║                                         Anexo                                                                 ║
+         * ║                                         Anexo da tela de Aceite                                               ║
          * ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
          */
 
@@ -225,10 +226,50 @@ $Anexo_repositorio = new Anexo_repositorio();
             // Movendo o arquivo para o diretório de destino
             if (move_uploaded_file($nome_temporario, $caminhoCompleto)) {
               // Salvando no banco de dados
-              $Anexo_repositorio->cadastro($nome_original, $novoNome, $tipo, $caminhoCompleto, $Template_Email[0], $pdo);
+              $Anexo_repositorio->cadastro($nome_original, $novoNome, $tipo, $caminhoCompleto, $Template_Email[0], 2 , $pdo);
             }
           }
         }
+
+
+        // 8ª Cadastro dos anexos do e-mail
+        /**
+         * ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+         * ║                                         Anexo da tela de Aceite                                               ║
+         * ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+         */
+
+
+         $nomeArquivo = "ArquivoEmail" . $contador;
+         $Arquivo_temporario = $_FILES[$nomeArquivo];
+ 
+ 
+         foreach ($Arquivo_temporario['name'] as $indice => $nome) {
+           $nome_temporario = $Arquivo_temporario['tmp_name'][$indice];
+           $tipo = $Arquivo_temporario['type'][$indice];
+ 
+           // Verificação se o arquivo é válido
+           if ($nome_temporario != "" && is_uploaded_file($nome_temporario)) {
+             // Nome original do arquivo
+             $nome_original = $nome;
+ 
+             // Um nome único para o arquivo
+             $novoNome = time() . '.' . $nome;
+ 
+             // Diretório do arquivo
+             $diretorio = 'Docs/';
+ 
+             // Caminho completo do arquivo
+             $caminhoCompleto = $diretorio . $novoNome;
+ 
+             // Movendo o arquivo para o diretório de destino
+             if (move_uploaded_file($nome_temporario, $caminhoCompleto)) {
+               // Salvando no banco de dados
+               $Anexo_repositorio->cadastro($nome_original, $novoNome, $tipo, $caminhoCompleto, $Template_Email[0], 1 , $pdo);
+             }
+           }
+         }
+
       }
       $mensagem_resultado = "Cadastro de um serviço com sucesso!";
       $fundo_vermelho = false;

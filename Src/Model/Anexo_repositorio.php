@@ -40,20 +40,21 @@ class Anexo_repositorio
     * │  Função para registrar um arquivo de projeto novo                                                             │
     * └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
     */
-    function cadastro($nomeFantasia, $nome, $tipoArquivo, $diretorio, $idTemplate_Email, $pdo)
+    function cadastro($nomeFantasia, $nome, $tipoArquivo, $diretorio, $idTemplate_Email, $idStatus_Anexo, $pdo)
     {
         try {
             $stmt = $pdo->prepare("INSERT INTO [Anexo]
-            ([nomeFantasia] , [nome] , [tipoArquivo], [diretorio] , [idTemplate_Email])  
+            ([nomeFantasia] , [nome] , [tipoArquivo], [diretorio] , [idTemplate_Email] , [idStatus_Anexo])  
                 VALUES 
-            (:nomeFantasia , :nome , :tipoArquivo , :diretorio , :idTemplate_Email);	");
+            (:nomeFantasia , :nome , :tipoArquivo , :diretorio , :idTemplate_Email , :idStatus_Anexo);	");
 
             $stmt->execute(array(
                 ":nomeFantasia" => $nomeFantasia,
                 ":nome" => $nome,
                 ":tipoArquivo" => $tipoArquivo,
                 ":diretorio" => $diretorio,
-                ":idTemplate_Email" => $idTemplate_Email
+                ":idTemplate_Email" => $idTemplate_Email,
+                ":idStatus_Anexo" => $idStatus_Anexo
             ));
 
             return true;

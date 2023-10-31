@@ -368,11 +368,11 @@ foreach ($lista_status as $status) {
                     ?>
 
 
-                    <label style="color: rgb(7,7,7); " for="ArquivoProjeto">Insira os anexos do <u>email</u>, caso deseje. Os arquivos são opcionais.</label>
+                    <label style="color: rgb(7,7,7); " for="ArquivoEmail">Insira os anexos do <u>email</u>, caso deseje. Os arquivos são opcionais.</label>
                     <div class="file-field input-field">
                       <div class="btn">
                         <span>Arquivo</span>
-                        <input type="file" id="ArquivoProjeto" name="ArquivoProjeto<?php echo $contador; ?>[]" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" multiple>
+                        <input type="file" id="ArquivoEmail" name="ArquivoEmail<?php echo $contador; ?>[]" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" multiple>
                       </div>
                       <div class="file-path-wrapper">
                         <input class="file-path validate" type="text">
@@ -396,7 +396,7 @@ foreach ($lista_status as $status) {
                       <div class="Div-TemplateAceite" id="Div-TemplateAceite<?php echo $contador; ?>">
                         <div class="row">
                           <div class="input-field col s12">
-                            <textarea style="color: rgb(7,7,7);" required id="emailAceite<?php echo $contador; ?>" class="materialize-textarea"></textarea>
+                            <textarea name="templateAceite[]" style="color: rgb(7,7,7);" required id="emailAceite<?php echo $contador; ?>" class="materialize-textarea"></textarea>
                             <label for="emailAceite<?php echo $contador; ?>">Caso tenha selecionado 'Email de aceite', por favor informe o texto que o colaborador irá visualizar na tela de aceite:</label>
                           </div>
                         </div>
@@ -427,7 +427,7 @@ foreach ($lista_status as $status) {
                       <div class="Div-TemplateAceite" id="Div-TemplateAceite<?php echo $contador; ?>" style="display: none;">
                         <div class="row">
                           <div class="input-field col s12">
-                            <textarea style="color: rgb(7,7,7);" id="emailAceite<?php echo $contador; ?>" class="materialize-textarea"></textarea>
+                            <textarea name="templateAceite[]" style="color: rgb(7,7,7);" id="emailAceite<?php echo $contador; ?>" class="materialize-textarea"></textarea>
                             <label for="emailAceite<?php echo $contador; ?>">Caso tenha selecionado 'Email de aceite', por favor informe o texto que o colaborador irá visualizar na tela de aceite:</label>
                           </div>
                         </div>
