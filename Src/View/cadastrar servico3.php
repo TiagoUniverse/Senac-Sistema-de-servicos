@@ -147,167 +147,177 @@ $Anexo_repositorio = new Anexo_repositorio();
   */
   $fundo_vermelho = true;
 
-  if (
-    isset($_POST['Descricao'])
-    && isset($_POST['destinatario1'])
-    && isset($_POST['tipo_email1'])
-    && isset($_POST['templateAceite'])
-    && isset($_FILES['ArquivoProjeto1'])
-    && isset($_POST['quantidadeEmails'])
-  ) {
-    $possui_info = true;
+// validar se existe algum email diretorio vazio
+// for ($contadorEmail = 1; $contadorEmail <= $_POST['quantidadeEmails']; $contadorEmail++ ){
+//   $nome = "destinatario" . $contadorEmail;
 
-    $servico_existe = $Servico_repositorio->servico_existe($_SESSION['nomeServico'], $pdo);
+//   echo $nome;
+//   if ($_POST[$nome] == null){
+//     echo "tem um faltando!!";
+//   } else{
+//     echo $_POST[$nome] . "<br>";
+//   }
+// }
 
+if (
+  isset($_POST['Descricao'])
+  && isset($_POST['destinatario1'])
+  && isset($_POST['tipo_email1'])
+  && isset($_POST['templateAceite'])
+  && isset($_FILES['ArquivoProjeto1'])
+  && isset($_POST['quantidadeEmails'])
+) {
+  $possui_info = true;
 
-    if ($servico_existe == false) {
-
-      // 1ª Cadastro do serviço
-      $Servico_repositorio->cadastro($_SESSION['nomeServico'],  $_SESSION['descricaoServico'], 1, $pdo);
-
-      // 2ª consulta do serviço criado
-      $Servico = $Servico_repositorio->consultar_byNome($_SESSION['nomeServico'], $pdo);
-
-      // Cadastro das informações de email do serviço:
-      for ($contador = 1; $contador <= $quantidadeEmails; $contador++) {
-
-        // 3ª Cadastro do Template de Email
-        $nome_TipoEmail = 'tipo_email' . $contador;
-
-        $Template_Email_repositorio->cadastro($descricao[$contador - 1], $contador, $_POST[$nome_TipoEmail], $Servico[0], $pdo);
-
-        // 4ª Consultar o Template de E-mail que acabou de ser criado
-        $Template_Email = $Template_Email_repositorio->consultar_templateCriado($descricao[$contador - 1], $Servico[0], $pdo);
+  $servico_existe = $Servico_repositorio->servico_existe($_SESSION['nomeServico'], $pdo);
 
 
-        // 5ª Cadastro dos e-mails destinatários de um respectivo template de e-mail        
-        $nome_EmailDestinatario = 'destinatario' . $contador;
+  if ($servico_existe == false) {
 
-        foreach ($_POST[$nome_EmailDestinatario] as $destinatario) {
-          $Email_destinatario_repositorio->cadastro($destinatario, $Template_Email[0], $pdo);
-        }
+    // 1ª Cadastro do serviço
+    $Servico_repositorio->cadastro($_SESSION['nomeServico'],  $_SESSION['descricaoServico'], 1, $pdo);
 
+    // 2ª consulta do serviço criado
+    $Servico = $Servico_repositorio->consultar_byNome($_SESSION['nomeServico'], $pdo);
 
-        // 6ª Cadastro do Template de Tela de Aceite, caso necessário
-        if ($_POST[$nome_TipoEmail] == 1) {
-          $Template_TelaAceite_repositorio->cadastro($_POST['Descricao'][$contador - 1], $Template_Email[0], $pdo);
-        }
+    // Cadastro das informações de email do serviço:
+    for ($contador = 1; $contador <= $quantidadeEmails; $contador++) {
 
-        // 7ª Cadastro dos Anexos de um Template de E-mail
-        /**
-         * ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
-         * ║                                         Anexo da tela de Aceite                                               ║
-         * ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
-         */
+      // 3ª Cadastro do Template de Email
+      $nome_TipoEmail = 'tipo_email' . $contador;
 
+      $Template_Email_repositorio->cadastro($descricao[$contador - 1], $contador, $_POST[$nome_TipoEmail], $Servico[0], $pdo);
 
-        $nomeArquivo = "ArquivoProjeto" . $contador;
-        $Arquivo_temporario = $_FILES[$nomeArquivo];
+      // 4ª Consultar o Template de E-mail que acabou de ser criado
+      $Template_Email = $Template_Email_repositorio->consultar_templateCriado($descricao[$contador - 1], $Servico[0], $pdo);
 
 
-        foreach ($Arquivo_temporario['name'] as $indice => $nome) {
-          $nome_temporario = $Arquivo_temporario['tmp_name'][$indice];
-          $tipo = $Arquivo_temporario['type'][$indice];
+      // 5ª Cadastro dos e-mails destinatários de um respectivo template de e-mail        
+      $nome_EmailDestinatario = 'destinatario' . $contador;
 
-          // Verificação se o arquivo é válido
-          if ($nome_temporario != "" && is_uploaded_file($nome_temporario)) {
-            // Nome original do arquivo
-            $nome_original = $nome;
+      foreach ($_POST[$nome_EmailDestinatario] as $destinatario) {
+        $Email_destinatario_repositorio->cadastro($destinatario, $Template_Email[0], $pdo);
+      }
 
-            // Um nome único para o arquivo
-            $novoNome = time() . '.' . $nome;
 
-            // Diretório do arquivo
-            $diretorio = 'Docs/';
+      // 6ª Cadastro do Template de Tela de Aceite, caso necessário
+      if ($_POST[$nome_TipoEmail] == 1) {
+        $Template_TelaAceite_repositorio->cadastro($_POST['Descricao'][$contador - 1], $Template_Email[0], $pdo);
+      }
 
-            // Caminho completo do arquivo
-            $caminhoCompleto = $diretorio . $novoNome;
+      // 7ª Cadastro dos Anexos de um Template de E-mail
+      /**
+       * ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+       * ║                                         Anexo da tela de Aceite                                               ║
+       * ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+       */
 
-            // Movendo o arquivo para o diretório de destino
-            if (move_uploaded_file($nome_temporario, $caminhoCompleto)) {
-              // Salvando no banco de dados
-              $Anexo_repositorio->cadastro($nome_original, $novoNome, $tipo, $caminhoCompleto, $Template_Email[0], 2 , $pdo);
-            }
+
+      $nomeArquivo = "ArquivoProjeto" . $contador;
+      $Arquivo_temporario = $_FILES[$nomeArquivo];
+
+
+      foreach ($Arquivo_temporario['name'] as $indice => $nome) {
+        $nome_temporario = $Arquivo_temporario['tmp_name'][$indice];
+        $tipo = $Arquivo_temporario['type'][$indice];
+
+        // Verificação se o arquivo é válido
+        if ($nome_temporario != "" && is_uploaded_file($nome_temporario)) {
+          // Nome original do arquivo
+          $nome_original = $nome;
+
+          // Um nome único para o arquivo
+          $novoNome = time() . '.' . $nome;
+
+          // Diretório do arquivo
+          $diretorio = 'Docs/';
+
+          // Caminho completo do arquivo
+          $caminhoCompleto = $diretorio . $novoNome;
+
+          // Movendo o arquivo para o diretório de destino
+          if (move_uploaded_file($nome_temporario, $caminhoCompleto)) {
+            // Salvando no banco de dados
+            $Anexo_repositorio->cadastro($nome_original, $novoNome, $tipo, $caminhoCompleto, $Template_Email[0], 2, $pdo);
           }
         }
-
-
-        // 8ª Cadastro dos anexos do e-mail
-        /**
-         * ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
-         * ║                                         Anexo da tela de Aceite                                               ║
-         * ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
-         */
-
-
-         $nomeArquivo = "ArquivoEmail" . $contador;
-         $Arquivo_temporario = $_FILES[$nomeArquivo];
- 
- 
-         foreach ($Arquivo_temporario['name'] as $indice => $nome) {
-           $nome_temporario = $Arquivo_temporario['tmp_name'][$indice];
-           $tipo = $Arquivo_temporario['type'][$indice];
- 
-           // Verificação se o arquivo é válido
-           if ($nome_temporario != "" && is_uploaded_file($nome_temporario)) {
-             // Nome original do arquivo
-             $nome_original = $nome;
- 
-             // Um nome único para o arquivo
-             $novoNome = time() . '.' . $nome;
- 
-             // Diretório do arquivo
-             $diretorio = 'Docs/';
- 
-             // Caminho completo do arquivo
-             $caminhoCompleto = $diretorio . $novoNome;
- 
-             // Movendo o arquivo para o diretório de destino
-             if (move_uploaded_file($nome_temporario, $caminhoCompleto)) {
-               // Salvando no banco de dados
-               $Anexo_repositorio->cadastro($nome_original, $novoNome, $tipo, $caminhoCompleto, $Template_Email[0], 1 , $pdo);
-             }
-           }
-         }
-
       }
-      $mensagem_resultado = "Cadastro de um serviço com sucesso!";
-      $fundo_vermelho = false;
-      ?>
-    <script>
-        M.toast({
-          html: $mensagem_resultado
-        });
-      </script>
-    <?php
-    } else {
-      $mensagem_resultado = "Este serviço já existe. Por favor, tente cadastrar outro serviço.";
-      ?>
-    <script>
-        M.toast({
-          html: $mensagem_resultado
-        });
-      </script>
-    <?php
+
+
+      // 8ª Cadastro dos anexos do e-mail
+      /**
+       * ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+       * ║                                         Anexo da tela de Aceite                                               ║
+       * ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+       */
+
+
+      $nomeArquivo = "ArquivoEmail" . $contador;
+      $Arquivo_temporario = $_FILES[$nomeArquivo];
+
+
+      foreach ($Arquivo_temporario['name'] as $indice => $nome) {
+        $nome_temporario = $Arquivo_temporario['tmp_name'][$indice];
+        $tipo = $Arquivo_temporario['type'][$indice];
+
+        // Verificação se o arquivo é válido
+        if ($nome_temporario != "" && is_uploaded_file($nome_temporario)) {
+          // Nome original do arquivo
+          $nome_original = $nome;
+
+          // Um nome único para o arquivo
+          $novoNome = time() . '.' . $nome;
+
+          // Diretório do arquivo
+          $diretorio = 'Docs/';
+
+          // Caminho completo do arquivo
+          $caminhoCompleto = $diretorio . $novoNome;
+
+          // Movendo o arquivo para o diretório de destino
+          if (move_uploaded_file($nome_temporario, $caminhoCompleto)) {
+            // Salvando no banco de dados
+            $Anexo_repositorio->cadastro($nome_original, $novoNome, $tipo, $caminhoCompleto, $Template_Email[0], 1, $pdo);
+          }
+        }
+      }
     }
-
-    
-   
-  } else {
-    $possui_info = false;
-
-    $mensagem_resultado = "Erro no cadastro do serviço. Por favor, tente novamente.";
-    ?>
+    $mensagem_resultado = "Cadastro de um serviço com sucesso!";
+    $fundo_vermelho = false;
+?>
     <script>
-        M.toast({
-          html: 'Erro no cadastro do serviço. Por favor, tente novamente.'
-        });
-      </script>
-    <?php
+      M.toast({
+        html: $mensagem_resultado
+      });
+    </script>
+  <?php
+  } else {
+    $mensagem_resultado = "Este serviço já existe. Por favor, tente cadastrar outro serviço.";
+  ?>
+    <script>
+      M.toast({
+        html: $mensagem_resultado
+      });
+    </script>
+  <?php
   }
+} else {
+  $possui_info = false;
+
+  $mensagem_resultado = "Erro no cadastro do serviço. Por favor, tente novamente.";
+  ?>
+  <script>
+    M.toast({
+      html: 'Erro no cadastro do serviço. Por favor, tente novamente.'
+    });
+  </script>
+<?php
+}
 
 
 
+
+ 
   ?>
 
 
@@ -331,39 +341,39 @@ $Anexo_repositorio = new Anexo_repositorio();
 
       <br><br>
       <?php
-        if ($fundo_vermelho){
-          ?>
-            <div class="container box-resultado fundo_vermelho">
-          <?php
-        } else {
-          ?>
+      if ($fundo_vermelho) {
+      ?>
+        <div class="container box-resultado fundo_vermelho">
+        <?php
+      } else {
+        ?>
           <div class="container box-resultado fundo_verde">
           <?php
         }
-      ?>
-      
-      
-
-
-
-        <?php echo "<h4>" . $mensagem_resultado . "</h4>"; ?>
-      </div>
+          ?>
 
 
 
 
 
+          <?php echo "<h4>" . $mensagem_resultado . "</h4>"; ?>
+          </div>
 
 
 
+
+
+
+
+
+        </div>
+
+
+        <?php require_once "Recursos/sidebar_fim.php"; ?>
     </div>
 
 
-    <?php require_once "Recursos/sidebar_fim.php"; ?>
-  </div>
-
-
-  <?php require_once "Recursos/footer.php"; ?>
+    <?php require_once "Recursos/footer.php"; ?>
 
 
 </body>
