@@ -301,7 +301,7 @@ foreach ($lista_status as $status) {
                             <div class="input-field col s12">
                               <div class="destinatarioColaborador-container" id="destinatarioColaborador-container<?php echo $contador; ?>">
                                 <!--  irei cadastrar 'emailDoColaborador@gmail.com' inicialmente para que posteriormente seja alterado pelo e-mail correto do colaborador-->
-                          <input type="hidden" name="destinatario<?php echo $contador; ?>[]" value="emailDoColaborador@gmail.com">
+                          <input type="hidden" name="destinatarioColaborador<?php echo $contador; ?>[]" value="emailDoColaborador@gmail.com">
                                 <input type="text" value="O sistema enviará o e-mail para o e-mail pessoal do colaborador." name="destinatarioColaborador<?php echo $contador; ?>[]" disabled>
                               </div>
                             </div>
@@ -608,29 +608,32 @@ foreach ($lista_status as $status) {
   </script>
 
 
-  <!-- Campo destinatario do colaborador -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      <?php
-      for ($contador = 1; $contador <= $quantidadeEmails; $contador++) {
-      ?>
-        const checkbox<?php echo $contador; ?> = document.getElementById("mostrarDestinatario<?php echo $contador; ?>");
-        const destinatarioColaboradorContainer<?php echo $contador; ?> = document.getElementById("destinatarioColaborador-container<?php echo $contador; ?>");
 
-        if (checkbox<?php echo $contador; ?> && destinatarioColaboradorContainer<?php echo $contador; ?>) {
-          checkbox<?php echo $contador; ?>.addEventListener("change", function() {
-            if (checkbox<?php echo $contador; ?>.checked) {
-              destinatarioColaboradorContainer<?php echo $contador; ?>.style.display = "block";
-            } else {
-              destinatarioColaboradorContainer<?php echo $contador; ?>.style.display = "none";
-            }
-          });
-        }
-      <?php
+    <!-- Campo destinatario do colaborador -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    <?php
+    for ($contador = 1; $contador <= $quantidadeEmails; $contador++) {
+    ?>
+      const checkbox<?php echo $contador; ?> = document.getElementById("mostrarDestinatario<?php echo $contador; ?>");
+      const destinatarioInput<?php echo $contador; ?> = document.querySelector("input[name='destinatario<?php echo $contador; ?>[]']");
+
+      if (checkbox<?php echo $contador; ?> && destinatarioInput<?php echo $contador; ?>) {
+        checkbox<?php echo $contador; ?>.addEventListener("change", function() {
+          if (checkbox<?php echo $contador; ?>.checked) {
+            destinatarioInput<?php echo $contador; ?>.disabled = true;
+            destinatarioInput<?php echo $contador; ?>.value = "colaborador@gmail.com";
+          } else {
+            destinatarioInput<?php echo $contador; ?>.disabled = false;
+            destinatarioInput<?php echo $contador; ?>.value = "";
+          }
+        });
       }
-      ?>
-    });
-  </script>
+    <?php
+    }
+    ?>
+  });
+</script>
 
 
   <!-- Destinatario -->
